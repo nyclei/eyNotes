@@ -1,0 +1,9 @@
+Ref:  https://docs.adobe.com/docs/en/dispatcher/page-invalidate.html
+
+...
+Note: Deleting and recaching fies should be performed on the publish instance only. When performed from the author instance, race conditions occur when attempts to recache resources occur before they haved been published. 
+...
+
+
+
+
