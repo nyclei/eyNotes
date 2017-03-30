@@ -1,0 +1,75 @@
+Redis cluster vs replication (M/S,S) 
+
+[lei@localhost redis-binary-copy]$ ls -al
+total 21976
+drwxrwxr-x. 8 lei lei     228 Feb  9 13:26 .
+drwx------. 5 lei lei     157 Feb  9 12:10 ..
+drwxrwxr-x. 2 lei lei      72 Feb  9 13:28 7000
+drwxrwxr-x. 2 lei lei      72 Feb  9 13:28 7001
+drwxrwxr-x. 2 lei lei      72 Feb  9 13:28 7002
+drwxrwxr-x. 2 lei lei      72 Feb  9 13:28 7003
+drwxrwxr-x. 2 lei lei      72 Feb  9 13:28 7004
+drwxrwxr-x. 2 lei lei      72 Feb  9 13:29 7005
+-rwxrwxr-x. 1 lei lei     318 Feb  9 13:11 batch-start.sh
+-rwxr-xr-x. 1 lei lei 2807832 Feb  9 12:07 redis-benchmark
+-rwxr-xr-x. 1 lei lei   25168 Feb  9 12:07 redis-check-aof
+-rwxr-xr-x. 1 lei lei 5566064 Feb  9 12:07 redis-check-rdb
+-rwxr-xr-x. 1 lei lei 2960648 Feb  9 12:07 redis-cli
+-rwxr-xr-x. 1 lei lei 5566064 Feb  9 12:07 redis-sentinel
+-rwxr-xr-x. 1 lei lei 5566064 Feb  9 12:07 redis-server
+[lei@localhost redis-binary-copy]$ more batch-start.sh
+./redis-server 7000/redis.conf --protected-mode no &
+./redis-server 7001/redis.conf --protected-mode no &
+./redis-server 7002/redis.conf --protected-mode no &
+./redis-server 7003/redis.conf --protected-mode no &
+./redis-server 7004/redis.conf --protected-mode no &
+./redis-server 7005/redis.conf --protected-mode no &
+[lei@localhost redis-binary-copy]$ more 7000/redis.conf
+port 7000
+cluster-enabled yes
+cluster-config-file genratedNodes.conf
+cluster-node-timeout 5000
+appendonly yes
+logfile /tmp/redis-7000.log
+dir ./7000/
+bind 192.168.0.21 127.0.0.1
+[lei@localhost redis-binary-copy]$ sudo yum install gem
+[lei@localhost redis-binary-copy]$ gem install redis
+[lei@localhost redis-binary-copy]$ 
+[lei@localhost redis-binary-copy]$ ./redis-trib.rb create --replicas 1 127.0.0.1:7000 127.0.0.1:7001 127.0.0.1:7002 127.0.0.1:7003 127.0.0.1:7004 127.0.0.1:7005
+
+#ATTENTION if cross multiple machine, you should not use 127.0.00.1 in redis-trib.rb command, use real ip4 address as following:
+[lei@localhost redis-binary-copy]$ 
+ /home/lei/redis-3.2.7/src/./redis-trib.rb create --replicas 1 192.168.0.21:7000 192.168.0.21:7001 192.168.0.21:7002 192.168.0.21:7003 192.168.0.21:7004 192.168.0.21:7005 192.168.0.20:7007 192.168.0.20:7006
+
+# without using redis-trib.rb, you can use create-cluster
+start the 6 nodes with "cluster-enabled yes” , different port (as above ,default 30001 to 30006)
+> create-cluster start
+> create-cluster create
+> create-cluster stop
+
+# How to query
+> redis-cli -c -h 192.168.0.20 -p 7006
+> redis-cli -c -h 192.168.0.21 -p 7000
+
+
+
+# At least 6 Redis instances for 3 Master with 1 replica for each
+[lei@localhost redis-binary-copy]$ ./batch-start-R40001.sh
+[lei@localhost redis-binary-copy]$ ps -ef | grep redis
+lei       3305     1  0 10:50 pts/0    00:00:00 ./redis-server 192.168.40.91:40001 [cluster]
+lei       3306     1  0 10:50 pts/0    00:00:00 ./redis-server 192.168.40.91:40002 [cluster]
+lei       3307     1  0 10:50 pts/0    00:00:00 ./redis-server 192.168.40.91:40003 [cluster]
+lei       3315  2768  0 10:50 pts/0    00:00:00 grep --color=auto redis
+[lei@localhost redis-binary-copy]$
+[lei@localhost redis-binary-copy]$ ~/redis-3.2.7/src/redis-trib.rb create --replicas 1 192.168.40.91:40001 192.168.40.91:40002 192.168.40.91:40003
+>>> Creating cluster
+*** ERROR: Invalid configuration for cluster creation.
+*** Redis Cluster requires at least 3 master nodes.
+*** This is not possible with 3 nodes and 1 replicas per node.
+*** At least 6 nodes are required.
+[lei@localhost redis-binary-copy]$
+
+Ref http://serverfault.com/questions/815764/redis-cluster-3-master-nodes-minimum 
+and read “Using Redis in cluster mode means sharding"
+

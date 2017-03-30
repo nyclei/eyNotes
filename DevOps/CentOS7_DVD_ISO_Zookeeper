@@ -1,0 +1,193 @@
+CentOS 7 DVD ISO+ ZooKeeper
+Ref: https://www.cloudera.com/documentation/enterprise/5-5-x/topics/cdh_ig_zookeeper_package_install.html
+
+——— 
+Installation CentOS 7  
+Base Environment: 
+Infrastructure Server   + Add-Ons of “Java Platlform”
+if “Minimum installation” 
+> sudo dhclient
+> sudo yum install net-tools
+> sudo yum install lsof   
+> sudo yum install wget
+making it bridge mode
+> ifconfig
+——— 
+Start linux and making ‘ifconfig’ works
+> ifconfig  # found no ipAddr
+> sudo vi /etc/sysconfig/network-scripts/ifcfg-enp0s3
+   change “ONBOOT=yes”
+> service network restart
+> ifconfig   # now you will see the local ip
+
+
+——— 
+# Clone the vm 
+right click the vm and clone it
+open its ‘Settings’ and go to Network->Adapter1->Bridege Adapter mode->advanced, then refresh the MAC address
+it will make sure a new IP will be assigned by DHCP server
+
+
+——— 
+# Update yum repository
+> yum repolist       # see current yum repository 
+> sudo yum install https://archive.cloudera.com/cdh5/one-click-install/redhat/7/x86_64/cloudera-cdh-5-0.x86_64.rpm
+> sudo yum repolist        # list yum repository
+> sudo yum update        
+> yum repolist       # see Cloudera repo is added
+
+——— 
+# Install JDK8
+> sudo yum install java-1.8.0-openjdk-headless
+# Install nc
+> sudo yum install nc  
+
+# Install Zookeeper
+> sudo yum install zookeeper-server
+> sudo service zookeeper-server init
+> sudo service zookeeper-server start
+> echo stat | nc localhost 2181     # A standalone zookeeper service is started
+> sudo reboot      # check if it’s started after reboot with "echo stat | nc localhost 2181” or “ps -ef | grep java”
+	zoo.cfg=/etc/zookeeper/conf/zoo.cfg
+	dataDir=dataDir=/var/lib/zookeeper (myid stays here)
+	dataLogDir=/var/lib/zookeeper   
+
+        # about loggin
+    	> tail -f /var/log/zookeeper/zookeeper.log
+
+——— 
+# Configure Zookeeper cluster
+> sudo vi /etc/zookeeper/conf/zoo.cfg   # append
+ server.1=192.168.40.69:2888:3888
+ server.2=192.168.40.74:2888:3888
+ server.3=192.168.40.75:2888:3888
+# In  /var/lib/zookeeper/myid, add “1”, or “2”, or “3"
+> su -
+> echo “1" > /var/lib/zookeeper/myid
+> chown zookeeper:zookeeper /var/lib/zookeeper/myid
+# or easily do:
+> sudo service zookeeper-server init --force --myid=3
+
+——— 
+# check above installations
+> yum list
+
+——— 
+# Firewall issue  (you may have to disable firewall to make 3 zk nodes talking to each other)
+# stop firewalld
+> sudo systemctl stop firewalld
+# disable firewalld
+> sudo systemctl disable firewalld
+# if you don’t want to stop/disable firewalld, use firewall-cmd to add port to make it works as well
+> firewall-cmd --zone=public --add-port=2181/udp --add-port=2181/tcp --permanent 
+> firewall-cmd —reload
+
+——— 
+# Upload Solr/royal data schema to zookeeper ( *Do it from my Dev Solr localhost *)
+LeiBook:~ lile1$ /usr/local/Cellar/solr/6.1.0/server/scripts/cloud-scripts/zkcli.sh -zkhost 192.168.40.80:2181 -cmd upconfig -confdir /usr/local/Cellar/solr/6.1.0/server/solr/royal-ship-itineraries/conf -confname royalCfg
+LeiBook:~ lile1$
+LeiBook:~ lile1$ /usr/local/Cellar/solr/6.1.0/server/scripts/cloud-scripts/zkcli.sh -zkhost 192.168.40.80:2181 -cmd linkconfig -collection royal -confname royalCfg
+INFO  - 2017-01-17 15:09:21.173; org.apache.solr.cloud.ZkController; Load collection config from:/collections/royal
+LeiBook:~ lile1$
+
+# I did following to keep a backup of the conf at ~/royal-ship-itineraries_backup_conf
+# > cp -rf /usr/local/Cellar/solr/6.1.0/server/solr/royal-ship-itineraries/conf ~/royal-ship-itineraries_backup_conf
+
+——— 
+# export JAVA_HOME
+> sudo vi /etc/profile 
+   + export JAVA_HOME=/usr/lib/jvm/java-1.8.0-openjdk-1.8.0.121-0.b13.el7_3.x86_64/jre
+
+# Install solr
+> cd /tmp && wget http://www.us.apache.org/dist/lucene/solr/6.4.1/solr-6.4.1.tgz
+> tar xzf solr-6.4.1.tgz solr-6.4.1/bin/install_solr_service.sh --strip-components=2
+>  sudo ./install_solr_service.sh solr-6.4.1.tgz
+# solr is install and running now.... (type q to quit installation ending)
+
+> sudo service solr status   # different from 'solr status’
+> sudo service solr stop
+> sudo service solr start    # or ‘restart’
+(I modified /etc/init.d/solr by adding ‘-c -z 192.168.40.230:2181’ in start script)
+# under /var/solr : data, log
+# under /opt/solr : solr home
+sudo chmod -R a+rx /var/solr  # Do I need to do it for read the /var/solr  YES
+
+# IMPORTANT: 
+# on Reboot, the solr service must be started later then zookeep-server service, otherwise the solr process have to be restarted
+
+#Solr healthcheck
+> /opt/solr/bin/solr healthcheck -c royal -z localhost:2181
+
+
+# when duplicate the first CentOS node (minimum CentOS is ok)
+shut it down
+clone it with “Full clone” & “Everything” & “Reinitialize the network MAC”
+collect 3 IP4 address : 
+192.168.40.80, 
+192.168.40.81, 
+192.168.40.82
+
+Add following in each node’s /etc/zookeeper/conf/zoo.cfg:
+> sudo vi /etc/zookeeper/conf/zoo.cfg
+server.1=192.168.40.80:2888:3888
+server.2=192.168.40.81:2888:3888
+server.3=192.168.40.81:2888:3888
+> sudo service zookeeper-server stop
+> sudo service zookeeper-server init --force —myid=1  # or 2, or 3
+> sudo vi /var/lib/zookeeper/myid     # add 1 or 2 or 3
+> sudo service zookeeper-server start
+> echo stat | nc localhost 2181          # wait for 10s to retry
+
+> sudo vi /etc/init.d/solr
+  su -c "SOLR_INCLUDE=\"$SOLR_ENV\" \"$SOLR_INSTALL_DIR/bin/solr\" $SOLR_CMD -c -z 192.168.40.80:2181,192.168.40.81:2181,192.168.40.82:2181 " - "$RUNAS”
+> systemctl daemon-reload
+
+goto my Dev-host machine, upload the solr schema (see green above)
+
+
+# install Redis
+> sudo yum install gem       # redis-trib needs ruby and its package support
+> gem install redis
+
+# install Redis 3.2.7
+> sudo yum groupinstall 'Development Tools'  
+> cd ~ && wget http://download.redis.io/releases/redis-3.2.7.tar.gz
+> tar xzvf redis-3.2.7.tar.gz
+> cd redis-3.2.7/deps
+> make jemalloc
+> cd ..
+> make
+> sudo make install
+…
+> sudo vi /etc/redis.conf          # if you want to use this conf file 
+
+# add 'vm.overcommit_memory = 1' to /etc/sysctl.conf and then reboot or run the command 'sysctl vm.overcommit_memory=1' for this to take effect
+> sudo sysctl vm.overcommit_memory=1
+
+# run the command 'echo never > /sys/kernel/mm/transparent_hugepage/enabled' as root, and add it to your /etc/rc.local
+> su -
+> echo never > /sys/kernel/mm/transparent_hugepage/enabled
+> exit
+
+# start 
+> redis-server /etc/redis.conf   # for starting the server
+
+
+# install Redis 2.8.19
+> cd /tmp
+> wget http://dl.fedoraproject.org/pub/epel/7/x86_64/e/epel-release-7-9.noarch.rpm
+> sudo rpm -Uvh  epel-release-7-9.noarch.rpm
+> yum repolist    # see 'epel' and 'extra’ 
+> sudo yum install redis
+> sudo systemctl enable redis.service
+> reboot
+… testing redis with following …
+> ps -ef | grep redis    # port 6379
+>  redis-cli
+127.0.0.1:6379> set a 100
+OK
+127.0.0.1:6379> get a
+"100"
+127.0.0.1:6379> quit
+
+

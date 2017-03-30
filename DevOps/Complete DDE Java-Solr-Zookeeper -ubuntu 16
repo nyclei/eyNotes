@@ -1,0 +1,109 @@
+Complete DDE: Java/Solr/Zookeeper  (ubuntu 16)
+
+
+
+df -k
+sudo apt-get update && sudo apt-get upgrade -y
+df -k
+
+Python
+sudo apt-get install python-software-properties
+python --version
+
+Java
+sudo add-apt-repository ppa:webupd8team/java
+sudo apt-get update && sudo apt-get install oracle-java8-installer
+java -version
+
+zookeeper
+sudo apt-get update && sudo apt-get install zookeeper
+
+sudo vi /etc/zookeeper/conf/myid  # 1 , 2 ,3
+
+sudo vi /etc/zookeeper/conf/zoo.cfg 
+   server.1=zs1:2888:3888
+   server.2=zs2:2888:3888
+   server.3=zs3:2888:3888
+
+sudo vi /etc/hosts
+  192.168.40.57  zs1
+  192.168.40.58  zs2
+  192.168.40.59  zs3
+  
+
+sudo vi /usr/share/zookeeper/bin/zkEnv.sh
+   JAVA=/usr/bin/java
+   JMXPORT=12818   #need to manage it in JMX?
+
+# START ZK
+sudo /usr/share/zookeeper/bin/zkServer.sh start /etc/zookeeper/conf/zoo.cfg
+
+
+# now zookeeper should be installed 
+/var/lib/zookeeper     # is a sym link
+/etc/zookeeper/conf    # 
+/usr/share/zookeeper/bin   #
+
+# following is no longer needed
+sudo chmod -R 777 /etc/zookeeper/
+sudo chmod -R 777 /var/lib/zookeeper
+sudo chmod -R 777 /var/log/zookeeper/
+
+
+solr
+
+
+cd /tmp && wget http://www.us.apache.org/dist/lucene/solr/6.4.1/solr-6.4.1.tgz
+tar xzf solr-6.4.1.tgz solr-6.4.1/bin/install_solr_service.sh --strip-components=2
+sudo ./install_solr_service.sh solr-6.4.1.tgz
+# solr is install and running now.... (type q to quit installation ending)
+
+service solr status   # different from 'solr status'
+
+service solr stop
+service solr start    # or ‘restart'
+(I modified /etc/init.d/solr by adding ‘-c -z 192.168.40.230:2181’ in start script)
+
+# under /var/solr : data, log
+# under /opt/solr : solr home
+sudo chmod -R a+rx /var/solr  # Do I need to do it for read the /var/solr  YES
+
+
+# START Solr
+> sudo service solr restart
+
+Upload royal data schema to zookeeper ( * Do it from our Dev instance *)
+1) 
+LeiBook:~ lile1$ /usr/local/Cellar/solr/6.1.0/server/scripts/cloud-scripts/zkcli.sh -zkhost 192.168.40.57:2181 -cmd upconfig -confdir /usr/local/Cellar/solr/6.1.0/server/solr/royal-ship-itineraries/conf -confname royalCfg
+LeiBook:~ lile1$
+LeiBook:~ lile1$ /usr/local/Cellar/solr/6.1.0/server/scripts/cloud-scripts/zkcli.sh -zkhost 192.168.40.57:2181 -cmd linkconfig -collection royal -confname royalCfg
+INFO  - 2017-01-17 15:09:21.173; org.apache.solr.cloud.ZkController; Load collection config from:/collections/royal
+LeiBook:~ lile1$
+# I did following to keep a backup of the conf at ~/royal-ship-itineraries_backup_conf
+# > cp -rf /usr/local/Cellar/solr/6.1.0/server/solr/royal-ship-itineraries/conf ~/royal-ship-itineraries_backup_conf
+
+2) go to each ZS server, do following
+
+lei@zs3:~$ sudo vi /etc/init.d/solr
+lei@zs3:~$ systemctl daemon-reload
+ add some options in CMD -c -z zs1:2181,zs2:2181,zs3:2181 
+For example:    
+     su -c "SOLR_INCLUDE=\"$SOLR_ENV\" \"$SOLR_INSTALL_DIR/bin/solr\" $SOLR_CMD -c -z zs1:2181,zs2:2181,zs3:2181" - "$RUNAS”
+
+# Optional to make it JMX monitorable from remote
+lei@zs3:~$ sudo vi /etc/default/solr.in.sh
+    + ENABLE_REMOTE_JMX_OPTS="true"
+    + RMI_PORT=18983
+
+lei@zs3:~$ sudo service solr restart
+   
+3)
+making sure alll 3 solr are updated and restarted, then go to step 4)
+
+4)
+open browser and goto  http://192.168.40.57:8983/solr/#/~collections
+Create a collection with ‘royal’ , royalCfg, 1 shard, 3 replication
+
+5) making sure the collection ‘royal’ is created on each solr server
+
+6) You can go to Eclipse open ‘develop’ workspace, open “csvSolr” project, use it to reindex the solr (change in CsvIndexer.java )

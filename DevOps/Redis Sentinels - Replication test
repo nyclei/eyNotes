@@ -1,0 +1,195 @@
+Redis Sentinels /Replication test
+
+Ref.
+https://redis.io/topics/sentinel   # see A quick tutorial
+http://blog.commando.io/redis-is-easy-trivial-hard/
+https://seanmcgary.com/posts/how-to-build-a-fault-tolerant-redis-cluster-with-sentinel
+
+[Master]
+- redis.conf
+bind 192.168.40.92 127.0.0.1
+port 6379
+- sentinel.conf
+port 26379
+sentinel monitor mymaster 192.168.40.92 6379 2
+sentinel down-after-milliseconds mymaster 10000
+sentinel failover-timeout mymaster 60000
+
+
+[Slave1]
+- redis.conf
+bind 192.168.40.93 127.0.0.1
+slaveof 192.168.40.92 6379
+port 6379
+[ref Slave2 in below ]
+- sentinel.conf
+port 26379
+sentinel monitor mymaster 192.168.40.92 6379 2
+sentinel down-after-milliseconds mymaster 10000
+sentinel failover-timeout mymaster 60000
+
+
+ [Slave2]
+- redis.conf
+bind 192.168.40.94 127.0.0.1
+slaveof 192.168.40.92 6379
+port 6379
+protected-mode yes
+tcp-backlog 511
+timeout 0
+tcp-keepalive 300
+supervised no
+daemonize no 
+pidfile "/var/run/redis_6379.pid”
+loglevel notice
+logfile “”
+database 16
+save 900 1
+save 300 10
+save 60 10000
+stop-writes-on-bgsave-error yes
+rdbcompression yes
+rdbchecksum yes
+dbfilename “dump.rdb”
+dir "/home/lei/redis-binary-copy”
+# replicatioin
+slave-serve-stale-data yes
+slave-read-only yes
+repl-diskless-sync no
+repl-diskless-sync-delay 5
+repl-ping-slave-period 10
+repl-disable-tcp-nodelay no
+repl-backlog-size 8mb
+slave-priority 100 
+min-slaves-to-write 1
+min-slaves-max-lag 10
+
+appendonly no
+appendfilename “appendonly.aof"
+
+
+- sentinel.conf
+port 26379
+sentinel monitor mymaster 192.168.40.92 6379 2
+sentinel down-after-milliseconds mymaster 10000
+sentinel failover-timeout mymaster 60000
+
+[How to Start]
+> cd ~/redis-binary-copy 
+> ./startServerAndSentinel.sh
+
+or 
+
+> pkill redis-server
+> pkill redis-sentinel
+> redis-binary-copy/redis-server redis-binary-copy/conf/redis.conf --protected-mode no > /tmp/redis.log &
+> redis-binary-copy/redis-sentinel redis-binary-copy/conf/sentinel.conf --protected-mode no > /tmp/sentinel.log &
+
+
+[Redis benchmark]
+
+# benchmark on redis server
+LeiBook:tmp lile1$ redis-benchmark -h 192.168.40.92 -p 6379 -t set,get -q
+SET: 12817.23 requests per second
+GET: 13896.61 requests per second
+
+# on sever2
+LeiBook:tmp lile1$ redis-benchmark -h 192.168.40.93 -p 6379 -t set,get -q
+SET: 14710.21 requests per second
+GET: 14492.75 requests per second
+
+# another server
+LeiBook:tmp lile1$ redis-benchmark -h 192.168.40.94 -p 6379 -t set,get -q
+SET: 15379.88 requests per second
+GET: 14320.49 requests per second
+
+# specify 200000 requests for each of set or get operations, set random space with -r
+LeiBook:tmp lile1$ redis-benchmark -h 192.168.40.94 -t set,get -d 16 -n 200000 -r 100000 -q
+SET: 14726.46 requests per second
+GET: 14215.65 requests per second
+
+# using 16-byte-data (default data size is 2)
+LeiBook:tmp lile1$ redis-benchmark -h 192.168.40.92 -t sadd,lpush,set,get,incr -d 16 -n 200000 -r 100000 -q
+SET: 12531.33 requests per second
+GET: 13559.32 requests per second
+INCR: 13386.88 requests per second
+LPUSH: 13651.88 requests per second
+SADD: 14015.42 requests per second
+
+# increase the data size to 32 bytes
+LeiBook:tmp lile1$ redis-benchmark -h 192.168.40.92 -t sadd,lpush,set,get,incr -d 32 -n 200000 -r 100000 -q
+SET: 13430.03 requests per second
+GET: 13687.38 requests per second
+INCR: 12687.14 requests per second
+LPUSH: 14204.55 requests per second
+SADD: 12103.61 requests per second
+
+# increase connection to 80 (default is 50)
+LeiBook:tmp lile1$ redis-benchmark -h 192.168.40.93 -t sadd,lpush,set,get,incr -c 80 -d 32 -n 500000 -r 100000 -q
+SET: 13466.56 requests per second
+GET: 14407.15 requests per second
+INCR: 15436.39 requests per second
+LPUSH: 14356.68 requests per second
+SADD: 15375.63 requests per second
+
+# increase connection to 80 (default is 50), remove ‘-q’ for verbose (-q for throughput only)
+LeiBook:tmp lile1$ redis-benchmark -h 192.168.40.93 -t sadd,lpush,set,get,incr -c 80 -d 32 -n 500000 -r 100000
+====== SET ======
+  500000 requests completed in 32.05 seconds
+  80 parallel clients
+  32 bytes payload
+  keep alive: 1
+
+0.76% <= 1 milliseconds
+4.64% <= 2 milliseconds
+11.97% <= 3 milliseconds
+24.01% <= 4 milliseconds
+… …
+
+====== GET ======
+  500000 requests completed in 34.23 seconds
+  80 parallel clients
+  32 bytes payload
+  keep alive: 1
+
+0.27% <= 1 milliseconds
+1.86% <= 2 milliseconds
+5.63% <= 3 milliseconds
+… … 
+
+====== INCR ======
+  500000 requests completed in 33.98 seconds
+  80 parallel clients
+  32 bytes payload
+  keep alive: 1
+
+0.37% <= 1 milliseconds
+2.26% <= 2 milliseconds
+6.47% <= 3 milliseconds
+15.95% <= 4 milliseconds
+… ...
+
+# set real data in the redis, instead of testing only (-t) 
+LeiBook:tmp lile1$ redis-benchmark -h 192.168.40.92 -r 100000 -n 1000 set 'lei{benchmark1}:__rand_int__' __rand_int__
+====== set lei{benchmark1}:__rand_int__ __rand_int__ ======
+  1000 requests completed in 0.08 seconds
+  50 parallel clients
+  3 bytes payload
+  keep alive: 1
+
+0.80% <= 1 milliseconds
+4.10% <= 2 milliseconds
+22.30% <= 3 milliseconds
+74.20% <= 4 milliseconds
+95.40% <= 5 milliseconds
+99.30% <= 6 milliseconds
+100.00% <= 6 milliseconds
+13157.90 requests per second
+
+[data setup]
+Java/Jedis code initialized from ~/develop/csvSolr/…../RedisSentinelIndexer.java
+Either start from inside Eclipse or from shell (it has main() method)
+
+The code may be changed later to separated values.  (For now multiple values are concatenated into one string, use format as “v1-v2-v3-v4". The better practice maybe separate them)
+
+
