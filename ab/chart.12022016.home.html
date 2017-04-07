@@ -1,0 +1,88 @@
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+
+
+<script>
+google.charts.load('current', {packages: ['corechart', 'line']});
+google.charts.setOnLoadCallback(drawLineColors);
+
+function drawLineColors() {
+  var data = new google.visualization.DataTable();
+  data.addColumn('number', 'C');
+  data.addColumn('number', 'rps1');
+  data.addColumn('number', 'rps2');
+  data.addColumn('number', 'rps3');
+
+  data.addRows([
+      [3, 2.30, 2.39, 3.15 ],
+      [6, 5.14, 4.56, 4.57 ],
+      [9, 6.68, 7.01, 6.84 ],
+      [12, 8.06, 8.10, 8.41 ],
+      [15, 9.37, 7.95, 8.61 ],
+      [18, 8.88, 8.14, 8.22 ],
+      [21, 8.59, 15.28, 15.70 ],
+      [24, 17.80, 17.96, 17.57 ],
+      [27, 17.91, 18.71, 18.66 ],
+      [30, 20.62, 21.14, 20.27 ],
+      [33, 23.03, 22.87, 22.45 ],
+      [36, 23.80, 22.87, 23.35 ],
+      [39, 23.70, 24.66, 25.42 ],
+      [42, 25.94, 25.86, 25.72 ],
+      [45, 26.85, 27.38, 25.95 ],
+      [48, 26.79, 26.90, 24.88 ],
+      [51, 24.87, 26.36, 26.58 ],
+      [54, 27.65, 26.80, 26.19 ],
+      [57, 26.64, 26.51, 26.85 ],
+      [60, 26.06, 27.16, 28.40 ],
+      [63, 28.55, 27.85, 27.13 ],
+      [66, 27.87, 26.81, 28.01 ],
+      [69, 27.07, 28.39, 28.58 ],
+      [72, 28.44, 26.07, 27.56 ],
+      [75, 28.09, 27.46, 27.24 ],
+      [78, 27.81, 26.24, 28.45 ],
+      [81, 27.92, 28.39, 28.59 ]
+  ]);
+
+  var options = {
+    hAxis: {
+      title: 'Concurency( # of users)'
+    },
+    vAxis: {
+      title: 'Request Per Second'
+    },
+    colors: ['#a52714', '#097138', '#1020E0'],
+    width:800,
+    height:600
+  };
+
+  var chart = new google.visualization.LineChart(document.getElementById('chart_div'));
+  chart.draw(data, options);
+}
+</script>
+
+<div class="main" style="margin-bottom: 2cm;"><s></s>
+    <h2>12/02/2016 Home</h2>
+    <div id="chart_div"></div>
+    <div id="legend" style="font-size:12px">Each user fires 50 GET requests</div>
+</div>
+
+<div id="dispatcherPerfmon">
+    <b>Tested on:</b> Dec 02, 2016 9:30PM <br>
+    <b>Location:</b> Home VPN <br>
+    <b>Concurrency setup:</b> 3 users, 6 users, 9 users ... 81 users<br>
+    <b>Request number sent out by each user:</b> 50 GETs<br>
+    <b>Repeat:</b> 3  (see 3 lines in the chart)<br>
+    <br>
+    <b>TOP RPS:</b> 28.58 request per seconds<br>
+    <b>Concurrency(users) trend:</b> RPS reaches highest peak point(average) at concurrency of 69. After that RPS won't keep climb up.<br>
+
+    <P>The test was performed against origin staging server: <b>https://origin-stg1.aem.royalcaribbean.com/</b>, the data flow bypasses Akamai Cache and directly fetches content from 2 dispatchers.</p>
+    <P>During the load test, even with highest load(81 users concurrently fire 4050 http requests),
+       both Dispatcher 1 and Dispatcher 2 perform well: less than <b>4%</b> CPU usages for multiple 'httpd' processes.
+       Memory usage is not a concern for this test, always less than 1% (homepage only, limited assets used).
+    <ul>
+       <li>Dispatcher 1 used: rccl-stage-dispatcher1.adobecqms.net</li>
+       <li>Dispatcher 2 used: rccl-stage-dispatcher2.adobecqms.net</li>
+   </ul>
+
+
+</div>

@@ -1,0 +1,89 @@
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+
+
+<script>
+google.charts.load('current', {packages: ['corechart', 'line']});
+google.charts.setOnLoadCallback(drawLineColors);
+
+function drawLineColors() {
+  var data = new google.visualization.DataTable();
+  data.addColumn('number', 'C');
+  data.addColumn('number', 'rps1');
+  data.addColumn('number', 'rps2');
+  data.addColumn('number', 'rps3');
+
+  data.addRows([
+      [3, 119.94, 124.18, 118.97 ],
+      [6, 131.84, 131.18, 131.19 ],
+      [9, 124.78, 124.50, 132.25 ],
+      [12, 137.46, 136.97, 138.32 ],
+      [15, 136.42, 135.28, 138.87 ],
+      [18, 135.53, 138.01, 131.75 ],
+      [21, 134.64, 138.49, 138.67 ],
+      [24, 133.40, 137.46, 138.37 ],
+      [27, 121.70, 137.44, 136.22 ],
+      [30, 131.27, 138.16, 137.65 ],
+      [33, 133.81, 140.60, 134.58 ],
+      [36, 136.06, 132.16, 138.82 ],
+      [39, 135.25, 137.30, 134.10 ],
+      [42, 137.73, 133.74, 139.92 ],
+      [45, 129.37, 137.98, 135.05 ],
+      [48, 124.62, 131.67, 133.98 ],
+      [51, 136.36, 133.98, 133.17 ],
+      [54, 137.22, 134.89, 133.95 ],
+      [57, 128.97, 136.55, 130.29 ],
+      [60, 132.80, 135.84, 134.74 ],
+      [63, 131.08, 131.56, 132.82 ],
+      [66, 135.84, 133.04, 132.51 ],
+      [69, 131.51, 132.90, 135.35 ],
+      [72, 133.04, 132.87, 134.01 ],
+      [75, 133.11, 134.55, 135.28 ],
+      [78, 132.82, 133.75, 128.53 ],
+      [81, 133.34, 132.49, 134.75 ],
+  ]);
+
+  var options = {
+    hAxis: {
+      title: 'Concurency( # of users)'
+    },
+    vAxis: {
+      title: 'Request Per Second',
+      minValue: 0
+    },
+    colors: ['#a52714', '#097138', '#1020E0'],
+    width:800,
+    height:600
+  };
+
+  var chart = new google.visualization.LineChart(document.getElementById('chart_div'));
+  chart.draw(data, options);
+}
+</script>
+
+<div class="main" style="margin-bottom: 2cm;">
+    <h2>12/02/2016 Office</h2>
+    <div id="chart_div"></div>
+    <div id="legend" style="font-size:12px">Each user fires 50 GET requests</div>
+</div>
+
+<div id="dispatcherPerfmon">
+    <b>Tested on:</b> Dec 05, 2016 14:00PM <br>
+    <b>Location:</b> SSH Dispatcher 1: rccl-stage-dispatcher1.adobecqms.net <br>
+    <b>Concurrency setup:</b> 3 users, 6 users, 9 users ... 81 users<br>
+    <b>Request No. sent out by each user:</b> 50 GETs<br>
+    <b>Repeat:</b> 3  (see 3 lines in the chart)<br>
+    <br>
+    <b>TOP RPS:</b> 140.6 request per seconds<br>
+    <b>Concurrency(users) trend:</b> RPS reaches highest range(avarage) at concurrency of 12. After that RPS won't keep climb up.<br>
+
+    <P>The test was performed against origin staging server: <b>https://origin-stg1.aem.royalcaribbean.com/</b>, the data flow bypasses Akamai Cache and directly fetches content from 2 dispatchers.</p>
+    <P>During the load test, even with highest load(81 users concurrently fire 4050 http requests),
+       both Dispatcher 1 and Dispatcher 2 perform well: less than <b>3.5%</b> CPU usages for multiple 'httpd' processes.
+       Memory usage is not a concern for this test, always less than 1% (homepage only, limited assets used).
+    <ul>
+       <li>Dispatcher 1 used: rccl-stage-dispatcher1.adobecqms.net</li>
+       <li>Dispatcher 2 used: rccl-stage-dispatcher2.adobecqms.net</li>
+   </ul>
+
+
+</div>

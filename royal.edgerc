@@ -1,0 +1,13 @@
+[prod]
+host = akab-3qdfanxysg2tv3qs-wfdpganauunlf2g5.purge.akamaiapis.net
+client_token = akab-jwruoghheshlbaif-pxmprmwmvmrtw4o2
+client_secret = TrMvDF455kZZc4aL6821q7toilhgpWgB/OM8hG3vjo8=
+access_token = akab-ajvsqwrxjgekyqdu-slcpngtjl2i3jrx6
+max-body = 131072
+
+[stage]
+client_secret = RwNxthRJIr1Tb3tWzk3M3do2lCud2fA9+2Ph/5nNmu8=
+host = akab-ow7aaypxamuxvdgo-rp3jjq632tka53ck.purge.akamaiapis.net
+access_token = akab-fwwnmolbukslweul-qzkamtf73yf3fzae
+client_token = akab-soatrdt67mjvyru7-xgjgkt5niwj33pkr
+max-body = 131072
