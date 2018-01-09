@@ -1,0 +1,85 @@
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.bundle.js"></script>
+
+<canvas id="myChart" width="400" height="150"></canvas>
+<script>
+var ctx = document.getElementById("myChart");
+var myChart = new Chart(ctx, {
+    type: 'line', // 'bar'
+    data: {
+        labels: ["1", "2", "3", "4", "5", "6", "7", "8"],
+        datasets: [
+        {
+            label: 'RPS (new cache)',
+            data: [24.94, 28.70, 31.52, 39.28, 42.57, 41.85, 40.82, 39.63],
+            backgroundColor: [
+                'rgba(0, 0, 0, 0)'
+            ],
+            borderColor: [
+                'rgba(59, 190, 64, 1)',
+            ],
+            borderWidth: 1
+        },
+        {
+            label: 'RPS (new cache)',
+            data: [28.87, 35.09, 36.26, 42.17, 42.54, 37.92, 44.62, 41.47],
+            backgroundColor: [
+                'rgba(0, 0, 0, 0)'
+            ],
+            borderColor: [
+                'rgba(59, 190, 64, 1)',
+            ],
+            borderWidth: 1
+        },
+        {
+            label: 'RPS (new cache)',
+            data: [24.31, 37.64, 32.42, 40.99, 42.70, 39.25, 44.01, 41.03],
+            backgroundColor: [
+                'rgba(0, 0, 0, 0)'
+            ],
+            borderColor: [
+                'rgba(59, 190, 64, 1)',
+            ],
+            borderWidth: 1
+        },
+
+        // Old cache data
+        {
+            label: 'RPS (old cache)',
+            data: [21.81, 27.93, 27.03, 27.57, 27.89, 27.80],
+            backgroundColor: [
+                'rgba(0, 0, 0, 0)'
+            ],
+            borderColor: [
+                'rgba(200, 54, 45, 1)',
+            ],
+            borderWidth: 1
+        },
+        {
+            label: 'RPS (old cache)',
+            data: [21.15, 26.40, 27.57, 27.66, 27.91, 28.26],
+            backgroundColor: [
+                'rgba(0, 0, 0, 0)'
+            ],
+            borderColor: [
+                'rgba(200, 54, 45, 1)',
+            ],
+            borderWidth: 1
+        }]
+    },
+    options: {
+        scales: {
+            yAxes: [{
+                ticks: {
+                    beginAtZero:true
+                }
+            }]
+        },
+        title: {
+            display: true,
+            text: 'Cache performance monitoring - Apache Benchmark'
+        }
+    }
+});
+</script>

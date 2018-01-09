@@ -1,0 +1,10 @@
+http://web01.web.stdev03.nj01:7001/
+http://web01.web.stdev03.nj01:7001/pdp.jsp?productId=mchx_clmn_orgthnctlt&catId=picks_love&cm_vc=mc_hp_new_cust:POSITION%202:m_freshdeals_prodcar
+http://web01.web.stdev03.nj01:7001/browse.jsp?pageType=browse&id=sea&pageSize=30&all=false&activePage=1&sortBy=null&orderAsc=false&activeTab=product&trk=gnav
+http://web01.web.stdev03.nj01:7001/browse.jsp?pageType=browse&id=dai&pageSize=30&all=false&activePage=1&sortBy=null&orderAsc=false&activeTab=product&trk=gnav
+http://web01.web.stdev03.nj01:7001/browse.jsp?pageType=browse&id=meatandpoultry&pageSize=30&all=true&activePage=1&sortBy=null&orderAsc=false&activeTab=product&trk=gnav
+http://web01.web.stdev03.nj01:7001/browse.jsp?pageType=browse&id=fru&pageSize=30&all=false&activePage=1&sortBy=null&orderAsc=false&activeTab=product&trk=gnav
+http://web01.web.stdev03.nj01:7001/browse.jsp?pageType=browse&id=deliandcheese&pageSize=30&all=true&activePage=1&sortBy=null&orderAsc=false&activeTab=product&trk=gnav
+http://web01.web.stdev03.nj01:7001/browse.jsp?pageType=browse&id=bky&pageSize=30&all=false&activePage=1&sortBy=null&orderAsc=false&activeTab=product&trk=gnav
+http://web01.web.stdev03.nj01:7001/browse.jsp?pageType=browse&id=supergro&pageSize=30&all=true&activePage=1&sortBy=null&orderAsc=false&activeTab=product&trk=gnav
+http://web01.web.stdev03.nj01:7001/browse.jsp?pageType=browse&id=fro&pageSize=30&all=false&activePage=1&sortBy=null&orderAsc=false&activeTab=product&trk=gnav
