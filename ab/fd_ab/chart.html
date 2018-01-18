@@ -1,85 +1,293 @@
 
 
+
+<style>
+  .bordered {
+    width: 1000px;
+    padding: 20;
+    border: 1px solid yellowgreen;
+    border-radius: 8px;
+    margin-bottom: 20px;
+  }
+</style>
+
+<div class='bordered'>
+<h3>Old Cache</h3>
+We see there are 2 problems here: <br>
+One problem is about the async data loading strategy using old cache.
+<ul>
+    <li> Ineffcient cache eviction policy:
+         The eviction decision is made based on which product is recently read.
+         This should cause a bigger problem with server is busy. If more requests coming in for reading more
+         productInfo, server will get busy in responding HttpResponse. But on the backend current cache
+         eviction strategy will make server more busier in replacing more cache elements.</li>
+    <li> Unnecessary Database fetches:
+         DB access fetches a good amount of productInfo in every 10 minutes, which were UNCHANGED.</li>
+    <li> Taken extra effects in maintaining expiryList, in EVERY 10 SECONDS. </li>
+</ul>
+
+Another problem is about the old cache implementation itself.
+<ul>
+    <li> Mutual exclusive cache reading</li>
+    <li> Inefficient READ. Each read has extra work on 1) maintaining LRU, 2) maintaining expiryList
+    <li> LRU cache implementation with self maintained linked list, which is part of READ/WRITE/UPDATE process.
+        It makes every operation synchronized.</li>
+</ul>
+</div>
+
+
+
+<div class='bordered'>
+<h3>Implementation</h3>
+This is a POC trial beginning with ProductInfo cache, we tried to make sure following things are considerred:
+<ul>
+    <li> Seamless code migration: mininum changes possible </li>
+    <li> Correctness: no DB data updates are missed</li>
+    <li> Performance: no performance loss -> more performance gain </li>
+    <li> Measurable: this is a little difficult because productInfo cache is one of many data caches.</li>
+</ul>
+We started with implementation to replace the existing data LRU eviction thread with async data loading process,
+at the end we have total 3 different caches built and tested. One of them will be finally used after performance/load test.
+
+<ul>
+    <li> LRU eviction cache on in-memory map with async data loading </li>
+    <li> Random eviction cache on in-memory map with async data loading (removed synchronized READ )</li>
+    <li> Ehcache with aync data loading </li>
+</ul>
+</div>
+
+
+
+<div class='bordered'>
+<h3> Comparsion 1: Requests per second</h3>
+<p> 2 URLs were added to fd-urls.txt, they were sent out to appServer by simultaneously. <br>
+    My laptop has 2 cpu processors which were used by 'parallel' to run 'ab'.</p>
+<ul>
+  <li><b>url1:</b> http://web01.web.stdev03.nj01:7001/
+  <li><b>url2:</b> http://web01.web.stdev03.nj01:7001/browse.jsp?pageType=browse&id=veg&pageSize=30&all=false&activePage=1&sortBy=null&orderAsc=false&activeTab=product&trk=gnav
+ </li>
+</ul>
+
+<!-- <canvas id="loadChart" width="800" height="600"></canvas> -->
+
+    <canvas id="rpsChart" width="980" height="450"></canvas>
+</div>
+
+
+
+
+
+
+<h3> Comparsion 2: Diff on how many DB Queries for fetching productInfo. </h3>
+<div class='bordered'>
+<h4>Old productInfo cache:</h4>
+<p>It periodically fetches productInfo from database based on its recently-used, without considering if its content is updated. Unnecessary access DB even productInfo is never modified in DB.</p>
+<ul>
+  <li><b>Start:</b> 16 Jan 2018 15:28:58,016 (first timestamp)</li>
+  <li><b>End:</b> 16 Jan 2018 15:55:01,213 (last timestamp)</li>
+  <li><b>Duration:</b> 26 minutes 3 seconds</li>
+  <li><b>'ab' keep hitting server by sending HttpRquests:</b> YES (30000+ req sent to HomePage and Category Pages)</li>
+  <li><b>Database Queries:</b> 33473 (31115 unique)</li>
+  <li><b>Average query per minute:</b>  1287.5 qpm</li>
+</ul>
+
+<cite>I tested it again on the 2nd day morning(01/17). After warmup phrase, within 76 minutes [10:38:05-11:54:49], there were 195926 DB queries. Which is about 2578 qpm. </cite>
+</div>
+<div class='bordered'>
+<h4>New cache on ehCache with async refresh thread:</h4>
+<p>No unnecessary fetches productInfo from database. </p>
+<ul>
+  <li><b>Start:</b> 16 Jan 2018 22:04:04,829 </li>
+  <li><b>End:</b> I manually stopped ‘tail -f’ on <i>Tue Jan 16 22:48:18 EST 2018</i>  - because no any DB fetch happens for a long while</li>
+  <li><b>Duration:</b> 43 minutes </li>
+  <li><b>'ab' keep hitting server by sending HttpRquests:</b> YES (30000+ req sent to HomePage and Category Pages)</li>
+  <li><b>Database Queries:</b> 285</li>
+  <li><b>Average query per minute:</b>  6.6 qpm</li>
+</ul>
+
+<cite>I tested it again on the 2nd day morning(01/17). After warmup phrase, within 60 minutes [12:21:21-13:31:34], there were 10114 DB queries. Which is about 168 qpm. </cite>
+</div>
+<div class='bordered'>
+<h4>New cache on in-memory Map, LRU eviction algo, with async refresh thread:</h4>
+<p style='color:#f00'> TBD </p>
+</div>
+<div class='bordered'>
+<h4>New cache on in-memory Map, Random eviction algo, with async refresh thread:</h4>
+<p style='color:#f00'> TBD </p>
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.bundle.js"></script>
-
-<canvas id="myChart" width="400" height="150"></canvas>
 <script>
-var ctx = document.getElementById("myChart");
-var myChart = new Chart(ctx, {
-    type: 'line', // 'bar'
-    data: {
-        labels: ["1", "2", "3", "4", "5", "6", "7", "8"],
-        datasets: [
-        {
-            label: 'RPS (new cache)',
-            data: [24.94, 28.70, 31.52, 39.28, 42.57, 41.85, 40.82, 39.63],
-            backgroundColor: [
-                'rgba(0, 0, 0, 0)'
-            ],
-            borderColor: [
-                'rgba(59, 190, 64, 1)',
-            ],
-            borderWidth: 1
-        },
-        {
-            label: 'RPS (new cache)',
-            data: [28.87, 35.09, 36.26, 42.17, 42.54, 37.92, 44.62, 41.47],
-            backgroundColor: [
-                'rgba(0, 0, 0, 0)'
-            ],
-            borderColor: [
-                'rgba(59, 190, 64, 1)',
-            ],
-            borderWidth: 1
-        },
-        {
-            label: 'RPS (new cache)',
-            data: [24.31, 37.64, 32.42, 40.99, 42.70, 39.25, 44.01, 41.03],
-            backgroundColor: [
-                'rgba(0, 0, 0, 0)'
-            ],
-            borderColor: [
-                'rgba(59, 190, 64, 1)',
-            ],
-            borderWidth: 1
-        },
+var ctx;
 
-        // Old cache data
-        {
-            label: 'RPS (old cache)',
-            data: [21.81, 27.93, 27.03, 27.57, 27.89, 27.80],
-            backgroundColor: [
-                'rgba(0, 0, 0, 0)'
-            ],
-            borderColor: [
-                'rgba(200, 54, 45, 1)',
-            ],
-            borderWidth: 1
+ctx = document.getElementById("loadChart");
+if(ctx != null) {
+    var loadChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: [   "50 Requests", "100 Requests", "200 Requests", "250 Requests", "300 Requests"],
+            datasets: [
+            {
+                label: 'On Ehcache - RPS (new cache)',
+                data: [0.5,0.8,1.1,1.9,2.1],
+                backgroundColor: [
+                    'rgba(0, 0, 0, 0)'
+                ],
+                borderColor: [
+                    'rgba(159, 188, 64, 1)',
+                ],
+                borderWidth: 1
+            },
+            {
+                label: 'LRU eviction cache - RPS (new cache)',
+                data: [1.3,1.8,2.8,2.4,2.2],
+                backgroundColor: [
+                    'rgba(0, 0, 0, 0)'
+                ],
+                borderColor: [
+                    'rgba(9, 139, 134, 1)',
+                ],
+                borderWidth: 1
+            },
+            {
+                label: 'Random eviction cache - RPS (new cache)',
+                data: [1.2, 1.6, 1.4, 2.6, 2.1],
+                backgroundColor: [
+                    'rgba(0, 0, 0, 0)'
+                ],
+                borderColor: [
+                    'rgba(59, 90, 164, 1)',
+                ],
+                borderWidth: 1
+            },
+
+
+            // Old cache data
+            {
+                label: 'RPS (old cache)',
+                //data: [ 1.37,2.62,3.30,4.21,3.92,2.87,3.31,4.13],
+                data: [ 0.72, 1.1, 1.9, 1.6, 2.9],
+                backgroundColor: [
+                    'rgba(0, 0, 0, 0)'
+                ],
+                borderColor: [
+                    'rgba(200, 54, 45, 1)',
+                ],
+                borderWidth: 1
+            }
+            ]
         },
-        {
-            label: 'RPS (old cache)',
-            data: [21.15, 26.40, 27.57, 27.66, 27.91, 28.26],
-            backgroundColor: [
-                'rgba(0, 0, 0, 0)'
-            ],
-            borderColor: [
-                'rgba(200, 54, 45, 1)',
-            ],
-            borderWidth: 1
-        }]
-    },
-    options: {
-        scales: {
-            yAxes: [{
-                ticks: {
-                    beginAtZero:true
-                }
-            }]
-        },
-        title: {
-            display: true,
-            text: 'Cache performance monitoring - Apache Benchmark'
+        options: {
+            responsive: false,
+
+            scales: {
+                yAxes: [{
+                    ticks: {
+                        beginAtZero:true
+                    }
+                }]
+            },
+            title: {
+                display: true,
+                text: 'Server Load monitoring - Apache Benchmark'
+            }
         }
-    }
-});
+    });
+}
+
+ctx = document.getElementById("rpsChart");
+if(ctx != null) {
+    var rpsChart = new Chart(ctx, {
+        type: 'line', // 'bar'
+        data: {
+            labels: [   "c1-n50", "c2-n100", "c3-n150", "c4-n200",
+                        "c5-n250", "c6-n300", "c7-n350", "c8-n400"],
+            datasets: [
+            // {
+            //     label: 'On Ehcache - RPS (new cache)',
+            //     data: [1.36,3.1,3.76,3.43,4.17,3.74,3.97,4.05],
+            //     backgroundColor: [
+            //         'rgba(0, 0, 0, 0)'
+            //     ],
+            //     borderColor: [
+            //         'rgba(159, 188, 64, 1)',
+            //     ],
+            //     borderWidth: 1
+            // },
+            {
+                label: 'On Ehcache - RPS (new cache)',
+                data: [1.33,3.04,4.12,4.24,4.28,3.82,4.33,4.27],
+                backgroundColor: [
+                    'rgba(0, 0, 0, 0)'
+                ],
+                borderColor: [
+                    'rgba(159, 188, 64, 1)',
+                ],
+                borderWidth: 1
+            },
+            {
+                label: 'LRU eviction cache - RPS (new cache)',
+                data: [1.59,3.07,3.39,4.21,4.17,4.07,4.03,4.15],
+                backgroundColor: [
+                    'rgba(0, 0, 0, 0)'
+                ],
+                borderColor: [
+                    'rgba(9, 139, 134, 1)',
+                ],
+                borderWidth: 1
+            },
+            {
+                label: 'Random eviction cache - RPS (new cache)',
+                data: [1.69,3.21,4.00,3.89,3.89,4.1,4.07,4.02],
+                backgroundColor: [
+                    'rgba(0, 0, 0, 0)'
+                ],
+                borderColor: [
+                    'rgba(59, 90, 164, 1)',
+                ],
+                borderWidth: 1
+            },
+
+
+            // Old cache data
+            {
+                label: 'RPS (old cache)',
+                //data: [ 1.37,2.62,3.30,4.21,3.92,2.87,3.31,4.13],
+                data: [ 1.47,2.48,3.50,3.68,3.06,3.26,3.53,4.15],
+                backgroundColor: [
+                    'rgba(0, 0, 0, 0)'
+                ],
+                borderColor: [
+                    'rgba(200, 54, 45, 1)',
+                ],
+                borderWidth: 1
+            },
+            {
+                label: 'RPS (old cache)',
+                data: [ 1.37,2.62,3.30,4.21,3.92,2.87,3.31,4.13],
+                backgroundColor: [
+                    'rgba(0, 0, 0, 0)'
+                ],
+                borderColor: [
+                    'rgba(200, 54, 45, 1)',
+                ],
+                borderWidth: 1
+            }
+            ]
+        },
+        options: {
+            responsive: false,
+            scales: {
+                yAxes: [{
+                    ticks: {
+                        beginAtZero:true
+                    }
+                }]
+            },
+            title: {
+                display: true,
+                text: 'Cache performance monitoring - Apache Benchmark'
+            }
+        }
+    });
+}
 </script>

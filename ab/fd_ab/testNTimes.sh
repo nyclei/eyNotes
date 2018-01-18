@@ -6,7 +6,7 @@ Usage()
     echo "      - 'brew install parallel' if parallel is missing "
     echo "      - 'fd-urls.txt' exists with some absolute urls"
     echo "  Example:"
-    echo "    ./test6Times.sh 6"
+    echo "    ./testNTimes.sh 8"
 }
 
 startAb()
@@ -16,15 +16,15 @@ startAb()
     cat fd-urls.txt |parallel "ab -l -s 100 -q -n$N -c$C {} | grep 'Requests per second' | sed -e 's/.* \([0-9][^ ]*\) .*/\1/' 2>&1 " > $FN
     sleep 1
     printf "$FN - "
-    cat $FN |  sed -e ':a' -e 'N' -e '$!ba' -e 's/\n/ +/g' | bc
+    cat $FN |  sed -e ':a' -e 'N' -e '$!ba' -e 's/\n/ +/g' | awk '{print "scale=2; ("$1 $2") / 2" }' | bc
     sleep 1
 }
 
 # basic validation
 if [ -z "$1" ];
 then
-    echo 
-    echo "!! Error: missing argument of round number. !!"
+    echo
+    echo "!! Error: missing argument. !!"
     echo
     Usage
     echo
