@@ -1,0 +1,661 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE database SYSTEM "file:///System/Library/DTDs/CoreData.dtd">
+
+<database>
+    <databaseInfo>
+        <version>134481920</version>
+        <UUID>DC4CDBF5-68DE-4231-9F1D-425EAD2FC00A</UUID>
+        <nextObjectID>196</nextObjectID>
+        <metadata>
+            <plist version="1.0">
+                <dict>
+                    <key>NSPersistenceFrameworkVersion</key>
+                    <integer>641</integer>
+                    <key>NSStoreModelVersionHashes</key>
+                    <dict>
+                        <key>Folder</key>
+                        <data>
+		dyaIdf7Dnl6RnjbxLOrwYhpS9ygb99tURogw4RNoMm0=
+		</data>
+                        <key>Snippet</key>
+                        <data>
+		7EvVQJKk/8Y0+XxKuClbhzEO3MCbxHh4OJAB8XguZ9A=
+		</data>
+                    </dict>
+                    <key>NSStoreModelVersionHashesVersion</key>
+                    <integer>3</integer>
+                    <key>NSStoreModelVersionIdentifiers</key>
+                    <array></array>
+                </dict>
+            </plist>
+        </metadata>
+    </databaseInfo>
+    <object type="SNIPPET" id="z102">
+        <attribute name="title" type="string">admin</attribute>
+        <attribute name="index" type="int16">0</attribute>
+        <attribute name="enabled" type="bool">1</attribute>
+        <attribute name="content" type="string">KS291}zO-T7Fk</attribute>
+        <relationship name="folder" type="1/1" destination="FOLDER" idrefs="z111"></relationship>
+    </object>
+    <object type="SNIPPET" id="z103">
+        <attribute name="title" type="string">URL - Author CRXDE</attribute>
+        <attribute name="index" type="int16">1</attribute>
+        <attribute name="enabled" type="bool">1</attribute>
+        <attribute name="content" type="string">http://rccl-prod-author1.adobecqms.net:4502/crx/de</attribute>
+        <relationship name="folder" type="1/1" destination="FOLDER" idrefs="z113"></relationship>
+    </object>
+    <object type="SNIPPET" id="z104">
+        <attribute name="title" type="string">URL - Publish - Agents</attribute>
+        <attribute name="index" type="int16">6</attribute>
+        <attribute name="enabled" type="bool">1</attribute>
+        <attribute name="content" type="string">http://royal-prod-publish1.adobecqms.net:4503/miscadmin#/etc/replication/agents.publish</attribute>
+        <relationship name="folder" type="1/1" destination="FOLDER" idrefs="z113"></relationship>
+    </object>
+    <object type="FOLDER" id="z105">
+        <attribute name="title" type="string">Stage</attribute>
+        <attribute name="index" type="int16">11</attribute>
+        <attribute name="enabled" type="bool">0</attribute>
+        <relationship name="snippets" type="0/0" destination="SNIPPET" idrefs="z118 z119"></relationship>
+    </object>
+    <object type="SNIPPET" id="z106">
+        <attribute name="title" type="string">URL - Publish CRXDE</attribute>
+        <attribute name="index" type="int16">2</attribute>
+        <attribute name="enabled" type="bool">1</attribute>
+        <attribute name="content" type="string">http://royal-prod-publish1.adobecqms.net:4503/crx/de</attribute>
+        <relationship name="folder" type="1/1" destination="FOLDER" idrefs="z113"></relationship>
+    </object>
+    <object type="SNIPPET" id="z107">
+        <attribute name="title" type="string">admin</attribute>
+        <attribute name="index" type="int16">0</attribute>
+        <attribute name="enabled" type="bool">1</attribute>
+        <attribute name="content" type="string">-RP3i4RI{kd@-q</attribute>
+        <relationship name="folder" type="1/1" destination="FOLDER" idrefs="z114"></relationship>
+    </object>
+    <object type="SNIPPET" id="z108">
+        <attribute name="title" type="string">admin</attribute>
+        <attribute name="index" type="int16">0</attribute>
+        <attribute name="enabled" type="bool">1</attribute>
+        <attribute name="content" type="string">B#E3RAp{4ui#</attribute>
+        <relationship name="folder" type="1/1" destination="FOLDER" idrefs="z113"></relationship>
+    </object>
+    <object type="FOLDER" id="z109">
+        <attribute name="title" type="string">Test</attribute>
+        <attribute name="index" type="int16">13</attribute>
+        <attribute name="enabled" type="bool">0</attribute>
+        <relationship name="snippets" type="0/0" destination="SNIPPET" idrefs="z116"></relationship>
+    </object>
+    <object type="SNIPPET" id="z110">
+        <attribute name="title" type="string">URL - PBL</attribute>
+        <attribute name="index" type="int16">4</attribute>
+        <attribute name="enabled" type="bool">1</attribute>
+        <attribute name="content" type="string">http://rccl-prod-author1.adobecqms.net:4502/etc/designs/royal/pbl.html</attribute>
+        <relationship name="folder" type="1/1" destination="FOLDER" idrefs="z113"></relationship>
+    </object>
+    <object type="FOLDER" id="z111">
+        <attribute name="title" type="string">Dev</attribute>
+        <attribute name="index" type="int16">12</attribute>
+        <attribute name="enabled" type="bool">0</attribute>
+        <relationship name="snippets" type="0/0" destination="SNIPPET" idrefs="z102"></relationship>
+    </object>
+    <object type="SNIPPET" id="z112">
+        <attribute name="title" type="string">URL - Akamai</attribute>
+        <attribute name="index" type="int16">3</attribute>
+        <attribute name="enabled" type="bool">1</attribute>
+        <attribute name="content" type="string">http://royal-prod-publish1.adobecqms.net:4503/etc/akamai/afp.html</attribute>
+        <relationship name="folder" type="1/1" destination="FOLDER" idrefs="z113"></relationship>
+    </object>
+    <object type="FOLDER" id="z113">
+        <attribute name="title" type="string">Prod</attribute>
+        <attribute name="index" type="int16">10</attribute>
+        <attribute name="enabled" type="bool">0</attribute>
+        <relationship name="snippets" type="0/0" destination="SNIPPET" idrefs="z106 z115 z112 z104 z108 z110 z103"></relationship>
+    </object>
+    <object type="FOLDER" id="z114">
+        <attribute name="title" type="string">Pre Prod</attribute>
+        <attribute name="index" type="int16">14</attribute>
+        <attribute name="enabled" type="bool">0</attribute>
+        <relationship name="snippets" type="0/0" destination="SNIPPET" idrefs="z107 z117"></relationship>
+    </object>
+    <object type="SNIPPET" id="z115">
+        <attribute name="title" type="string">URL - Origin</attribute>
+        <attribute name="index" type="int16">5</attribute>
+        <attribute name="enabled" type="bool">1</attribute>
+        <attribute name="content" type="string">https://origin-prd1.aem.royalcaribbean.com/</attribute>
+        <relationship name="folder" type="1/1" destination="FOLDER" idrefs="z113"></relationship>
+    </object>
+    <object type="SNIPPET" id="z116">
+        <attribute name="title" type="string">admin</attribute>
+        <attribute name="index" type="int16">0</attribute>
+        <attribute name="enabled" type="bool">1</attribute>
+        <attribute name="content" type="string">C8}36my#BRVH</attribute>
+        <relationship name="folder" type="1/1" destination="FOLDER" idrefs="z109"></relationship>
+    </object>
+    <object type="SNIPPET" id="z117">
+        <attribute name="title" type="string">CRXDE</attribute>
+        <attribute name="index" type="int16">1</attribute>
+        <attribute name="enabled" type="bool">1</attribute>
+        <attribute name="content" type="string">http://rccl-preprod-author1.adobecqms.net:4502/crx/de</attribute>
+        <relationship name="folder" type="1/1" destination="FOLDER" idrefs="z114"></relationship>
+    </object>
+    <object type="SNIPPET" id="z118">
+        <attribute name="title" type="string">admin</attribute>
+        <attribute name="index" type="int16">0</attribute>
+        <attribute name="enabled" type="bool">1</attribute>
+        <attribute name="content" type="string">?bwnQ0@kwHFM4</attribute>
+        <relationship name="folder" type="1/1" destination="FOLDER" idrefs="z105"></relationship>
+    </object>
+    <object type="SNIPPET" id="z119">
+        <attribute name="title" type="string">author crx/de</attribute>
+        <attribute name="index" type="int16">1</attribute>
+        <attribute name="enabled" type="bool">1</attribute>
+        <attribute name="content" type="string">http://rccl-stage-author1.adobecqms.net:4502/crx/de</attribute>
+        <relationship name="folder" type="1/1" destination="FOLDER" idrefs="z105"></relationship>
+    </object>
+    <object type="SNIPPET" id="z120">
+        <attribute name="title" type="string">lei.li@ey.com</attribute>
+        <attribute name="index" type="int16">0</attribute>
+        <attribute name="enabled" type="bool">1</attribute>
+        <attribute name="content" type="string">abcd1234</attribute>
+        <relationship name="folder" type="1/1" destination="FOLDER" idrefs="z121"></relationship>
+    </object>
+    <object type="FOLDER" id="z121">
+        <attribute name="title" type="string">BitBucket</attribute>
+        <attribute name="index" type="int16">15</attribute>
+        <attribute name="enabled" type="bool">0</attribute>
+        <relationship name="snippets" type="0/0" destination="SNIPPET" idrefs="z120 z122"></relationship>
+    </object>
+    <object type="SNIPPET" id="z122">
+        <attribute name="title" type="string">classloader@gmail.com</attribute>
+        <attribute name="index" type="int16">1</attribute>
+        <attribute name="enabled" type="bool">1</attribute>
+        <attribute name="content" type="string">abcd1234</attribute>
+        <relationship name="folder" type="1/1" destination="FOLDER" idrefs="z121"></relationship>
+    </object>
+    <object type="FOLDER" id="z123">
+        <attribute name="title" type="string">Excalibur DEV</attribute>
+        <attribute name="index" type="int16">5</attribute>
+        <attribute name="enabled" type="bool">0</attribute>
+        <relationship name="snippets" type="0/0" destination="SNIPPET" idrefs="z127 z137 z125 z140 z126 z135 z136 z172 z124"></relationship>
+    </object>
+    <object type="SNIPPET" id="z124">
+        <attribute name="title" type="string">admin pwd (CRXDE)</attribute>
+        <attribute name="index" type="int16">0</attribute>
+        <attribute name="enabled" type="bool">1</attribute>
+        <attribute name="content" type="string">mE#cy#R3EQjP3f</attribute>
+        <relationship name="folder" type="1/1" destination="FOLDER" idrefs="z123"></relationship>
+    </object>
+    <object type="SNIPPET" id="z125">
+        <attribute name="title" type="string">Author CRXDE URL</attribute>
+        <attribute name="index" type="int16">1</attribute>
+        <attribute name="enabled" type="bool">1</attribute>
+        <attribute name="content" type="string">http://rcldigital-dev-author1.adobecqms.net:4502/crx/de/index.jsp</attribute>
+        <relationship name="folder" type="1/1" destination="FOLDER" idrefs="z123"></relationship>
+    </object>
+    <object type="SNIPPET" id="z126">
+        <attribute name="title" type="string">SSH password</attribute>
+        <attribute name="index" type="int16">5</attribute>
+        <attribute name="enabled" type="bool">1</attribute>
+        <attribute name="content" type="string">58%UJFjZBc5p#L</attribute>
+        <relationship name="folder" type="1/1" destination="FOLDER" idrefs="z123"></relationship>
+    </object>
+    <object type="SNIPPET" id="z127">
+        <attribute name="title" type="string">Publish CRXDE URL</attribute>
+        <attribute name="index" type="int16">3</attribute>
+        <attribute name="enabled" type="bool">1</attribute>
+        <attribute name="content" type="string">http://rcldigital-dev-publish1.adobecqms.net:4503/crx/de</attribute>
+        <relationship name="folder" type="1/1" destination="FOLDER" idrefs="z123"></relationship>
+    </object>
+    <object type="SNIPPET" id="z128">
+        <attribute name="title" type="string">Author CRXDE URL</attribute>
+        <attribute name="index" type="int16">1</attribute>
+        <attribute name="enabled" type="bool">1</attribute>
+        <attribute name="content" type="string">http://rcldigital-test-author1.adobecqms.net:4502/crx/de/index.jsp</attribute>
+        <relationship name="folder" type="1/1" destination="FOLDER" idrefs="z129"></relationship>
+    </object>
+    <object type="FOLDER" id="z129">
+        <attribute name="title" type="string">Excalibur TEST</attribute>
+        <attribute name="index" type="int16">6</attribute>
+        <attribute name="enabled" type="bool">0</attribute>
+        <relationship name="snippets" type="0/0" destination="SNIPPET" idrefs="z130 z139 z133 z144 z134 z147 z132 z142 z175 z128 z165 z178 z138 z131"></relationship>
+    </object>
+    <object type="SNIPPET" id="z130">
+        <attribute name="title" type="string">Publish1 CRXDE</attribute>
+        <attribute name="index" type="int16">3</attribute>
+        <attribute name="enabled" type="bool">1</attribute>
+        <attribute name="content" type="string">http://rcldigital-test-publish1.adobecqms.net:4503/crx/de/index.jsp</attribute>
+        <relationship name="folder" type="1/1" destination="FOLDER" idrefs="z129"></relationship>
+    </object>
+    <object type="SNIPPET" id="z131">
+        <attribute name="title" type="string">SSH password</attribute>
+        <attribute name="index" type="int16">8</attribute>
+        <attribute name="enabled" type="bool">1</attribute>
+        <attribute name="content" type="string">MY21+=Ls@c~u3A</attribute>
+        <relationship name="folder" type="1/1" destination="FOLDER" idrefs="z129"></relationship>
+    </object>
+    <object type="SNIPPET" id="z132">
+        <attribute name="title" type="string">admin PWD (CRXDE)</attribute>
+        <attribute name="index" type="int16">0</attribute>
+        <attribute name="enabled" type="bool">1</attribute>
+        <attribute name="content" type="string">*3Qen6=4dEC=</attribute>
+        <relationship name="folder" type="1/1" destination="FOLDER" idrefs="z129"></relationship>
+    </object>
+    <object type="SNIPPET" id="z133">
+        <attribute name="title" type="string">Publish2 CRXDE</attribute>
+        <attribute name="index" type="int16">4</attribute>
+        <attribute name="enabled" type="bool">1</attribute>
+        <attribute name="content" type="string">http://rcldigital-test-publish2.adobecqms.net:4503/crx/de/index.jsp</attribute>
+        <relationship name="folder" type="1/1" destination="FOLDER" idrefs="z129"></relationship>
+    </object>
+    <object type="SNIPPET" id="z134">
+        <attribute name="title" type="string">Dispatcher</attribute>
+        <attribute name="index" type="int16">5</attribute>
+        <attribute name="enabled" type="bool">1</attribute>
+        <attribute name="content" type="string">http://test.rcldigital.api.rccl.com</attribute>
+        <relationship name="folder" type="1/1" destination="FOLDER" idrefs="z129"></relationship>
+    </object>
+    <object type="SNIPPET" id="z135">
+        <attribute name="title" type="string">Dispatcher</attribute>
+        <attribute name="index" type="int16">4</attribute>
+        <attribute name="enabled" type="bool">1</attribute>
+        <attribute name="content" type="string">http://dev.rcldigital.api.rccl.com</attribute>
+        <relationship name="folder" type="1/1" destination="FOLDER" idrefs="z123"></relationship>
+    </object>
+    <object type="SNIPPET" id="z136">
+        <attribute name="title" type="string">public Author</attribute>
+        <attribute name="index" type="int16">2</attribute>
+        <attribute name="enabled" type="bool">1</attribute>
+        <attribute name="content" type="string">http://author-rcldigital-dev.adobecqms.net/</attribute>
+        <relationship name="folder" type="1/1" destination="FOLDER" idrefs="z123"></relationship>
+    </object>
+    <object type="SNIPPET" id="z137">
+        <attribute name="title" type="string">SSH Author Link</attribute>
+        <attribute name="index" type="int16">6</attribute>
+        <attribute name="enabled" type="bool">1</attribute>
+        <attribute name="content" type="string">ssh rcldigital-admin@rcldigital-dev-author1.adobecqms.net</attribute>
+        <relationship name="folder" type="1/1" destination="FOLDER" idrefs="z123"></relationship>
+    </object>
+    <object type="SNIPPET" id="z138">
+        <attribute name="title" type="string">public Author</attribute>
+        <attribute name="index" type="int16">2</attribute>
+        <attribute name="enabled" type="bool">1</attribute>
+        <attribute name="content" type="string">http://tst-rcldigital-author.aem.rccl.com/crx/de/index.jsp</attribute>
+        <relationship name="folder" type="1/1" destination="FOLDER" idrefs="z129"></relationship>
+    </object>
+    <object type="SNIPPET" id="z139">
+        <attribute name="title" type="string">SSH Author Link</attribute>
+        <attribute name="index" type="int16">9</attribute>
+        <attribute name="enabled" type="bool">1</attribute>
+        <attribute name="content" type="string">ssh rcldigital-admin@rcldigital-test-author1.adobecqms.net</attribute>
+        <relationship name="folder" type="1/1" destination="FOLDER" idrefs="z129"></relationship>
+    </object>
+    <object type="SNIPPET" id="z140">
+        <attribute name="title" type="string">SSH Dispatchor Link</attribute>
+        <attribute name="index" type="int16">8</attribute>
+        <attribute name="enabled" type="bool">1</attribute>
+        <attribute name="content" type="string">ssh rcldigital-admin@rcldigital-dev-dispatcher1.adobecqms.net</attribute>
+        <relationship name="folder" type="1/1" destination="FOLDER" idrefs="z123"></relationship>
+    </object>
+    <object type="FOLDER" id="z141">
+        <attribute name="title" type="string">------</attribute>
+        <attribute name="index" type="int16">9</attribute>
+        <attribute name="enabled" type="bool">0</attribute>
+        <relationship name="snippets" type="0/0" destination="SNIPPET"></relationship>
+    </object>
+    <object type="SNIPPET" id="z142">
+        <attribute name="title" type="string">Dispatcher</attribute>
+        <attribute name="index" type="int16">6</attribute>
+        <attribute name="enabled" type="bool">1</attribute>
+        <attribute name="content" type="string">http://rcldigital-test.adobecqms.net/</attribute>
+        <relationship name="folder" type="1/1" destination="FOLDER" idrefs="z129"></relationship>
+    </object>
+    <object type="SNIPPET" id="z144">
+        <attribute name="title" type="string">Solr -10.16.7.54:10093</attribute>
+        <attribute name="index" type="int16">10</attribute>
+        <attribute name="enabled" type="bool">1</attribute>
+        <attribute name="content" type="string">http://10.16.7.54:10093</attribute>
+        <relationship name="folder" type="1/1" destination="FOLDER" idrefs="z129"></relationship>
+    </object>
+    <object type="SNIPPET" id="z145">
+        <attribute name="title" type="string">author ipAddr</attribute>
+        <attribute name="index" type="int16">1</attribute>
+        <attribute name="enabled" type="bool">1</attribute>
+        <attribute name="content" type="string">http://52.202.252.254:4502/crx/de/index.jsp</attribute>
+        <relationship name="folder" type="1/1" destination="FOLDER" idrefs="z148"></relationship>
+    </object>
+    <object type="SNIPPET" id="z147">
+        <attribute name="title" type="string">Solr - 10.135.105.158</attribute>
+        <attribute name="index" type="int16">11</attribute>
+        <attribute name="enabled" type="bool">1</attribute>
+        <attribute name="content" type="string">http://10.135.105.158:10094</attribute>
+        <relationship name="folder" type="1/1" destination="FOLDER" idrefs="z129"></relationship>
+    </object>
+    <object type="FOLDER" id="z148">
+        <attribute name="title" type="string">Excalibur STAGE</attribute>
+        <attribute name="index" type="int16">7</attribute>
+        <attribute name="enabled" type="bool">0</attribute>
+        <relationship name="snippets" type="0/0" destination="SNIPPET" idrefs="z176 z151 z150 z149 z154 z177 z145 z171 z170 z152 z159"></relationship>
+    </object>
+    <object type="SNIPPET" id="z149">
+        <attribute name="title" type="string">ssh author</attribute>
+        <attribute name="index" type="int16">3</attribute>
+        <attribute name="enabled" type="bool">1</attribute>
+        <attribute name="content" type="string">ssh rcldigital-admin@52.202.252.254</attribute>
+        <relationship name="folder" type="1/1" destination="FOLDER" idrefs="z148"></relationship>
+    </object>
+    <object type="SNIPPET" id="z150">
+        <attribute name="title" type="string">admin password</attribute>
+        <attribute name="index" type="int16">0</attribute>
+        <attribute name="enabled" type="bool">1</attribute>
+        <attribute name="content" type="string">-d@y4MD3RNAymi</attribute>
+        <relationship name="folder" type="1/1" destination="FOLDER" idrefs="z148"></relationship>
+    </object>
+    <object type="SNIPPET" id="z151">
+        <attribute name="title" type="string">publish2</attribute>
+        <attribute name="index" type="int16">7</attribute>
+        <attribute name="enabled" type="bool">1</attribute>
+        <attribute name="content" type="string">http://34.203.95.224:4503/crx/de</attribute>
+        <relationship name="folder" type="1/1" destination="FOLDER" idrefs="z148"></relationship>
+    </object>
+    <object type="SNIPPET" id="z152">
+        <attribute name="title" type="string">publish1</attribute>
+        <attribute name="index" type="int16">6</attribute>
+        <attribute name="enabled" type="bool">1</attribute>
+        <attribute name="content" type="string">http://34.207.32.206:4503/crx/de</attribute>
+        <relationship name="folder" type="1/1" destination="FOLDER" idrefs="z148"></relationship>
+    </object>
+    <object type="SNIPPET" id="z153">
+        <attribute name="title" type="string">admin / PWD</attribute>
+        <attribute name="index" type="int16">0</attribute>
+        <attribute name="enabled" type="bool">1</attribute>
+        <attribute name="content" type="string">MoUixt%N30+n</attribute>
+        <relationship name="folder" type="1/1" destination="FOLDER" idrefs="z156"></relationship>
+    </object>
+    <object type="SNIPPET" id="z154">
+        <attribute name="title" type="string">LB/dispatcher</attribute>
+        <attribute name="index" type="int16">8</attribute>
+        <attribute name="enabled" type="bool">0</attribute>
+        <attribute name="content" type="string">https://rcldigital-stage.adobecqms.net</attribute>
+        <relationship name="folder" type="1/1" destination="FOLDER" idrefs="z148"></relationship>
+    </object>
+    <object type="SNIPPET" id="z155">
+        <attribute name="title" type="string">Author Url 34.239.231.192:4502</attribute>
+        <attribute name="index" type="int16">2</attribute>
+        <attribute name="enabled" type="bool">1</attribute>
+        <attribute name="content" type="string">http://34.239.231.192:4502/crx/de/index.jsp</attribute>
+        <relationship name="folder" type="1/1" destination="FOLDER" idrefs="z156"></relationship>
+    </object>
+    <object type="FOLDER" id="z156">
+        <attribute name="title" type="string">Excalibur Prod</attribute>
+        <attribute name="index" type="int16">8</attribute>
+        <attribute name="enabled" type="bool">0</attribute>
+        <relationship name="snippets" type="0/0" destination="SNIPPET" idrefs="z164 z157 z173 z160 z174 z153 z167 z179 z161 z155 z163 z162 z158"></relationship>
+    </object>
+    <object type="SNIPPET" id="z157">
+        <attribute name="title" type="string">Publish2 Url</attribute>
+        <attribute name="index" type="int16">5</attribute>
+        <attribute name="enabled" type="bool">1</attribute>
+        <attribute name="content" type="string">http://34.203.161.232:4503/crx/de/index.jsp</attribute>
+        <relationship name="folder" type="1/1" destination="FOLDER" idrefs="z156"></relationship>
+    </object>
+    <object type="SNIPPET" id="z158">
+        <attribute name="title" type="string">Publish1 Url</attribute>
+        <attribute name="index" type="int16">4</attribute>
+        <attribute name="enabled" type="bool">1</attribute>
+        <attribute name="content" type="string">http://34.206.180.199:4503/crx/de/index.jsp</attribute>
+        <relationship name="folder" type="1/1" destination="FOLDER" idrefs="z156"></relationship>
+    </object>
+    <object type="SNIPPET" id="z159">
+        <attribute name="title" type="string">author url  (no 4502)</attribute>
+        <attribute name="index" type="int16">2</attribute>
+        <attribute name="enabled" type="bool">1</attribute>
+        <attribute name="content" type="string">https://author-rcldigital-stage.adobecqms.net/crx/de/index.jsp</attribute>
+        <relationship name="folder" type="1/1" destination="FOLDER" idrefs="z148"></relationship>
+    </object>
+    <object type="SNIPPET" id="z160">
+        <attribute name="title" type="string">ssh author</attribute>
+        <attribute name="index" type="int16">6</attribute>
+        <attribute name="enabled" type="bool">1</attribute>
+        <attribute name="content" type="string">ssh rcldigital-admin@34.239.231.192</attribute>
+        <relationship name="folder" type="1/1" destination="FOLDER" idrefs="z156"></relationship>
+    </object>
+    <object type="SNIPPET" id="z161">
+        <attribute name="title" type="string">ssh author Pwd</attribute>
+        <attribute name="index" type="int16">8</attribute>
+        <attribute name="enabled" type="bool">1</attribute>
+        <attribute name="content" type="string">f4TDoWbQ4O{2012</attribute>
+        <relationship name="folder" type="1/1" destination="FOLDER" idrefs="z156"></relationship>
+    </object>
+    <object type="SNIPPET" id="z162">
+        <attribute name="title" type="string">LB/Prod - adobecqms.net</attribute>
+        <attribute name="index" type="int16">9</attribute>
+        <attribute name="enabled" type="bool">1</attribute>
+        <attribute name="content" type="string">https://rcldigital-prod.adobecqms.net</attribute>
+        <relationship name="folder" type="1/1" destination="FOLDER" idrefs="z156"></relationship>
+    </object>
+    <object type="SNIPPET" id="z163">
+        <attribute name="title" type="string">Author url (no 4502)</attribute>
+        <attribute name="index" type="int16">3</attribute>
+        <attribute name="enabled" type="bool">1</attribute>
+        <attribute name="content" type="string">https://author-rcldigital-prod.adobecqms.net/crx/de/index.jsp</attribute>
+        <relationship name="folder" type="1/1" destination="FOLDER" idrefs="z156"></relationship>
+    </object>
+    <object type="SNIPPET" id="z164">
+        <attribute name="title" type="string">LB/Prod - rccl.com</attribute>
+        <attribute name="index" type="int16">10</attribute>
+        <attribute name="enabled" type="bool">1</attribute>
+        <attribute name="content" type="string">https://rcldigital.aem.rccl.com</attribute>
+        <relationship name="folder" type="1/1" destination="FOLDER" idrefs="z156"></relationship>
+    </object>
+    <object type="SNIPPET" id="z165">
+        <attribute name="title" type="string">LB</attribute>
+        <attribute name="index" type="int16">7</attribute>
+        <attribute name="enabled" type="bool">1</attribute>
+        <attribute name="content" type="string">http://tst-rcldigital.aem.rccl.com/</attribute>
+        <relationship name="folder" type="1/1" destination="FOLDER" idrefs="z129"></relationship>
+    </object>
+    <object type="SNIPPET" id="z167">
+        <attribute name="title" type="string">ssh publis1</attribute>
+        <attribute name="index" type="int16">7</attribute>
+        <attribute name="enabled" type="bool">1</attribute>
+        <attribute name="content" type="string">ssh rcldigital-admin@34.206.180.199</attribute>
+        <relationship name="folder" type="1/1" destination="FOLDER" idrefs="z156"></relationship>
+    </object>
+    <object type="SNIPPET" id="z168">
+        <attribute name="title" type="string">curl ipinfo.ip</attribute>
+        <attribute name="index" type="int16">0</attribute>
+        <attribute name="enabled" type="bool">1</attribute>
+        <attribute name="content" type="string">curl ipinfo.ip</attribute>
+        <relationship name="folder" type="1/1" destination="FOLDER" idrefs="z169"></relationship>
+    </object>
+    <object type="FOLDER" id="z169">
+        <attribute name="title" type="string">Linux command</attribute>
+        <attribute name="index" type="int16">2</attribute>
+        <attribute name="enabled" type="bool">0</attribute>
+        <relationship name="snippets" type="0/0" destination="SNIPPET" idrefs="z168"></relationship>
+    </object>
+    <object type="SNIPPET" id="z170">
+        <attribute name="title" type="string">ssh publish1</attribute>
+        <attribute name="index" type="int16">4</attribute>
+        <attribute name="enabled" type="bool">1</attribute>
+        <attribute name="content" type="string">ssh rcldigital-admin@34.207.32.206</attribute>
+        <relationship name="folder" type="1/1" destination="FOLDER" idrefs="z148"></relationship>
+    </object>
+    <object type="SNIPPET" id="z171">
+        <attribute name="title" type="string">ssh publish2</attribute>
+        <attribute name="index" type="int16">5</attribute>
+        <attribute name="enabled" type="bool">1</attribute>
+        <attribute name="content" type="string">ssh rcldigital-admin@34.203.95.224</attribute>
+        <relationship name="folder" type="1/1" destination="FOLDER" idrefs="z148"></relationship>
+    </object>
+    <object type="SNIPPET" id="z172">
+        <attribute name="title" type="string">SSH Publish1 link</attribute>
+        <attribute name="index" type="int16">7</attribute>
+        <attribute name="enabled" type="bool">1</attribute>
+        <attribute name="content" type="string">ssh rcldigital-admin@rcldigital-dev-publish1.adobecqms.net</attribute>
+        <relationship name="folder" type="1/1" destination="FOLDER" idrefs="z123"></relationship>
+    </object>
+    <object type="SNIPPET" id="z173">
+        <attribute name="title" type="string">solr ip</attribute>
+        <attribute name="index" type="int16">11</attribute>
+        <attribute name="enabled" type="bool">1</attribute>
+        <attribute name="content" type="string">http://10.17.121.235:10103/solr</attribute>
+        <relationship name="folder" type="1/1" destination="FOLDER" idrefs="z156"></relationship>
+    </object>
+    <object type="SNIPPET" id="z174">
+        <attribute name="title" type="string">solr ip - AL</attribute>
+        <attribute name="index" type="int16">12</attribute>
+        <attribute name="enabled" type="bool">1</attribute>
+        <attribute name="content" type="string">http://10.154.105.158:10105/solr/</attribute>
+        <relationship name="folder" type="1/1" destination="FOLDER" idrefs="z156"></relationship>
+    </object>
+    <object type="SNIPPET" id="z175">
+        <attribute name="title" type="string">Solr - 10.16.7.54:10288</attribute>
+        <attribute name="index" type="int16">12</attribute>
+        <attribute name="enabled" type="bool">1</attribute>
+        <attribute name="content" type="string">http://10.16.7.54:10288</attribute>
+        <relationship name="folder" type="1/1" destination="FOLDER" idrefs="z129"></relationship>
+    </object>
+    <object type="SNIPPET" id="z176">
+        <attribute name="title" type="string">author public SAML login</attribute>
+        <attribute name="index" type="int16">9</attribute>
+        <attribute name="enabled" type="bool">1</attribute>
+        <attribute name="content" type="string">http://stg-author.aem.rccl.com</attribute>
+        <relationship name="folder" type="1/1" destination="FOLDER" idrefs="z148"></relationship>
+    </object>
+    <object type="SNIPPET" id="z177">
+        <attribute name="title" type="string">solr</attribute>
+        <attribute name="index" type="int16">10</attribute>
+        <attribute name="enabled" type="bool">1</attribute>
+        <attribute name="content" type="string">http://10.17.132.145:10092/solr/#/commerce_products_index/query</attribute>
+        <relationship name="folder" type="1/1" destination="FOLDER" idrefs="z148"></relationship>
+    </object>
+    <object type="SNIPPET" id="z178">
+        <attribute name="title" type="string">solr - 10.16.7.54:10210</attribute>
+        <attribute name="index" type="int16">13</attribute>
+        <attribute name="enabled" type="bool">1</attribute>
+        <attribute name="content" type="string">http://10.16.7.54:10210</attribute>
+        <relationship name="folder" type="1/1" destination="FOLDER" idrefs="z129"></relationship>
+    </object>
+    <object type="SNIPPET" id="z179">
+        <attribute name="title" type="string">Author Url (user level)</attribute>
+        <attribute name="index" type="int16">1</attribute>
+        <attribute name="enabled" type="bool">1</attribute>
+        <attribute name="content" type="string">https://rcldigital-author.aem.rccl.com/crx/de</attribute>
+        <relationship name="folder" type="1/1" destination="FOLDER" idrefs="z156"></relationship>
+    </object>
+    <object type="FOLDER" id="z180">
+        <attribute name="title" type="string">Home</attribute>
+        <attribute name="index" type="int16">1</attribute>
+        <attribute name="enabled" type="bool">1</attribute>
+        <relationship name="snippets" type="0/0" destination="SNIPPET" idrefs="z187 z181 z182"></relationship>
+    </object>
+    <object type="SNIPPET" id="z181">
+        <attribute name="title" type="string">Library ID</attribute>
+        <attribute name="index" type="int16">0</attribute>
+        <attribute name="enabled" type="bool">1</attribute>
+        <attribute name="content" type="string">23041003695175</attribute>
+        <relationship name="folder" type="1/1" destination="FOLDER" idrefs="z180"></relationship>
+    </object>
+    <object type="SNIPPET" id="z182">
+        <attribute name="title" type="string">Library ID 2</attribute>
+        <attribute name="index" type="int16">1</attribute>
+        <attribute name="enabled" type="bool">1</attribute>
+        <attribute name="content" type="string">23041003863419</attribute>
+        <relationship name="folder" type="1/1" destination="FOLDER" idrefs="z180"></relationship>
+    </object>
+    <object type="FOLDER" id="z183">
+        <attribute name="title" type="string">FreshDirect</attribute>
+        <attribute name="index" type="int16">0</attribute>
+        <attribute name="enabled" type="bool">0</attribute>
+        <relationship name="snippets" type="0/0" destination="SNIPPET" idrefs="z189 z185 z188 z190 z196 z195 z194 z184"></relationship>
+    </object>
+    <object type="SNIPPET" id="z184">
+        <attribute name="title" type="string">Jenkins Deploy dev3.nj01</attribute>
+        <attribute name="index" type="int16">1</attribute>
+        <attribute name="enabled" type="bool">0</attribute>
+        <attribute name="content" type="string">http://jenkins.nj01/job/2017_web_perf_opt_phase2-Deploy-To-stdev03/</attribute>
+        <relationship name="folder" type="1/1" destination="FOLDER" idrefs="z183"></relationship>
+    </object>
+    <object type="SNIPPET" id="z185">
+        <attribute name="title" type="string">Jenkins Build Dev</attribute>
+        <attribute name="index" type="int16">0</attribute>
+        <attribute name="enabled" type="bool">0</attribute>
+        <attribute name="content" type="string">http://jenkins.nj01/job/2017_web_perf_opt_phase2-Build/</attribute>
+        <relationship name="folder" type="1/1" destination="FOLDER" idrefs="z183"></relationship>
+    </object>
+    <object type="FOLDER" id="z186">
+        <attribute name="title" type="string">------</attribute>
+        <attribute name="index" type="int16">4</attribute>
+        <attribute name="enabled" type="bool">0</attribute>
+        <relationship name="snippets" type="0/0" destination="SNIPPET"></relationship>
+    </object>
+    <object type="SNIPPET" id="z187">
+        <attribute name="title" type="string">MCL Library Login</attribute>
+        <attribute name="index" type="int16">2</attribute>
+        <attribute name="enabled" type="bool">1</attribute>
+        <attribute name="content" type="string">https://merl.ent.sirsi.net/client/en_US/mcl/?#</attribute>
+        <relationship name="folder" type="1/1" destination="FOLDER" idrefs="z180"></relationship>
+    </object>
+    <object type="SNIPPET" id="z188">
+        <attribute name="title" type="string">dev03 appserver 7001</attribute>
+        <attribute name="index" type="int16">4</attribute>
+        <attribute name="enabled" type="bool">0</attribute>
+        <attribute name="content" type="string">http://web01.web.stdev03.nj01:7001/</attribute>
+        <relationship name="folder" type="1/1" destination="FOLDER" idrefs="z183"></relationship>
+    </object>
+    <object type="SNIPPET" id="z189">
+        <attribute name="title" type="string">dev03 : SkuCode Search</attribute>
+        <attribute name="index" type="int16">2</attribute>
+        <attribute name="enabled" type="bool">0</attribute>
+        <attribute name="content" type="string">https://dev3.nj01/test/data/cache_content.jsp</attribute>
+        <relationship name="folder" type="1/1" destination="FOLDER" idrefs="z183"></relationship>
+    </object>
+    <object type="SNIPPET" id="z190">
+        <attribute name="title" type="string">dev03 web </attribute>
+        <attribute name="index" type="int16">3</attribute>
+        <attribute name="enabled" type="bool">0</attribute>
+        <attribute name="content" type="string">https://dev3.nj01/</attribute>
+        <relationship name="folder" type="1/1" destination="FOLDER" idrefs="z183"></relationship>
+    </object>
+    <object type="FOLDER" id="z191">
+        <attribute name="title" type="string">BitCoin</attribute>
+        <attribute name="index" type="int16">3</attribute>
+        <attribute name="enabled" type="bool">0</attribute>
+        <relationship name="snippets" type="0/0" destination="SNIPPET" idrefs="z193 z192"></relationship>
+    </object>
+    <object type="SNIPPET" id="z192">
+        <attribute name="title" type="string">build one tutorial</attribute>
+        <attribute name="index" type="int16">0</attribute>
+        <attribute name="enabled" type="bool">1</attribute>
+        <attribute name="content" type="string">https://hackernoon.com/learn-blockchains-by-building-one-117428612f46</attribute>
+        <relationship name="folder" type="1/1" destination="FOLDER" idrefs="z191"></relationship>
+    </object>
+    <object type="SNIPPET" id="z193">
+        <attribute name="title" type="string">build one github source code</attribute>
+        <attribute name="index" type="int16">1</attribute>
+        <attribute name="enabled" type="bool">1</attribute>
+        <attribute name="content" type="string">https://github.com/dvf/blockchain</attribute>
+        <relationship name="folder" type="1/1" destination="FOLDER" idrefs="z191"></relationship>
+    </object>
+    <object type="SNIPPET" id="z194">
+        <attribute name="title" type="string">Cisco AnyConnect URL</attribute>
+        <attribute name="index" type="int16">5</attribute>
+        <attribute name="enabled" type="bool">0</attribute>
+        <attribute name="content" type="string">rlinka.freshdirect.com</attribute>
+        <relationship name="folder" type="1/1" destination="FOLDER" idrefs="z183"></relationship>
+    </object>
+    <object type="SNIPPET" id="z195">
+        <attribute name="title" type="string">Cisco AnyConnect Password</attribute>
+        <attribute name="index" type="int16">7</attribute>
+        <attribute name="enabled" type="bool">0</attribute>
+        <attribute name="content" type="string">E\u2600Y_5634</attribute>
+        <relationship name="folder" type="1/1" destination="FOLDER" idrefs="z183"></relationship>
+    </object>
+    <object type="SNIPPET" id="z196">
+        <attribute name="title" type="string">Cisco AnyConnect ID</attribute>
+        <attribute name="index" type="int16">6</attribute>
+        <attribute name="enabled" type="bool">0</attribute>
+        <attribute name="content" type="string">Access1 / lli</attribute>
+        <relationship name="folder" type="1/1" destination="FOLDER" idrefs="z183"></relationship>
+    </object>
+</database>
