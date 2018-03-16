@@ -1,0 +1,99 @@
+{
+  "volumes": [],
+  "id": "/confluent/schema-registry",
+  "cmd": null,
+  "args": null,
+  "user": null,
+  "env": {
+    "SCHEMA_REGISTRY_MASTER_ELIGIBILITY": "false",
+    "SCHEMA_REGISTRY_LISTENERS": "http://0.0.0.0:10031,http://0.0.0.0:8081",
+    "SCHEMA_REGISTRY_SCHEMA_REGISTRY_ZK_NAMESPACE": "dcos-service-confluent-kafka/schema-registry",
+    "SCHEMA_REGISTRY_HEAP_OPTS": "-Xmx256M",
+    "SCHEMA_REGISTRY_KAFKASTORE_CONNECTION_URL": "10.17.121.64:2181/dcos-service-confluent-kafka"
+  },
+  "instances": 2,
+  "cpus": 2,
+  "mem": 8192,
+  "disk": 0,
+  "gpus": 0,
+  "executor": "",
+  "constraints": [],
+  "fetch": [],
+  "storeUrls": [],
+  "backoffSeconds": 1,
+  "backoffFactor": 1.15,
+  "maxLaunchDelaySeconds": 3600,
+  "container": {
+    "type": "DOCKER",
+    "volumes": [],
+    "docker": {
+      "image": "master.mesos:5000/confluentinc/cp-schema-registry:3.2.0",
+      "network": "BRIDGE",
+      "portMappings": [
+        {
+          "containerPort": 8081,
+          "hostPort": 10031,
+          "servicePort": 10131,
+          "protocol": "tcp",
+          "labels": {
+            "VIP_0": "schema-registry:8081"
+          }
+        }
+      ],
+      "privileged": false,
+      "parameters": [],
+      "forcePullImage": true
+    }
+  },
+  "healthChecks": [
+    {
+      "path": "/",
+      "protocol": "HTTP",
+      "portIndex": 0,
+      "gracePeriodSeconds": 60,
+      "intervalSeconds": 60,
+      "timeoutSeconds": 20,
+      "maxConsecutiveFailures": 3,
+      "ignoreHttp1xx": false
+    }
+  ],
+  "readinessChecks": [],
+  "dependencies": [],
+  "upgradeStrategy": {
+    "minimumHealthCapacity": 1,
+    "maximumOverCapacity": 1
+  },
+  "labels": {
+    "DCOS_PACKAGE_RELEASE": "6",
+    "DCOS_SERVICE_SCHEME": "http",
+    "DCOS_PACKAGE_SOURCE": "http://master.mesos:8082/repo",
+    "HAPROXY_GROUP": "external",
+    "DCOS_PACKAGE_REGISTRY_VERSION": "3.0",
+    "DCOS_SERVICE_NAME": "schema-registry",
+    "DCOS_SERVICE_PORT_INDEX": "0",
+    "HAPROXY_0_HTTP_BACKEND_PROXYPASS_PATH": "/schema-registry",
+    "HAPROXY_0_PATH": "/schema-registry",
+    "DCOS_PACKAGE_VERSION": "0.9.9-3.2.0",
+    "DCOS_PACKAGE_NAME": "confluent-schema-registry",
+    "DCOS_PACKAGE_IS_FRAMEWORK": "false",
+    "HAPROXY_0_VHOST": "10.165.105.158,10.165.105.159,10.165.105.71,mesos.symphony.sh.rccl.com"
+  },
+  "acceptedResourceRoles": [
+    "*"
+  ],
+  "ipAddress": null,
+  "residency": null,
+  "secrets": {},
+  "taskKillGracePeriodSeconds": null,
+  "portDefinitions": [
+    {
+      "port": 10131,
+      "protocol": "tcp",
+      "name": "schema-registry",
+      "labels": {
+        "VIP_0": "schema-registry:8081"
+      }
+    }
+  ],
+  "requirePorts": false
+}

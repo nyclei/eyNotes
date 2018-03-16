@@ -1,0 +1,97 @@
+{
+  "volumes": [],
+  "id": "/confluent/rest-proxy",
+  "cmd": null,
+  "args": null,
+  "user": null,
+  "env": {
+    "KAFKA_REST_SCHEMA_REGISTRY_URL": "http://schema-registry.marathon.l4lb.thisdcos.directory:8081",
+    "KAFKA_REST_ZOOKEEPER_CONNECT": "master.mesos:2181/dcos-service-confluent-kafka",
+    "KAFKAREST_HEAP_OPTS": "-Xmx768M"
+  },
+  "instances": 2,
+  "cpus": 2,
+  "mem": 32768,
+  "disk": 0,
+  "gpus": 0,
+  "executor": "",
+  "constraints": [],
+  "fetch": [],
+  "storeUrls": [],
+  "backoffSeconds": 1,
+  "backoffFactor": 1.15,
+  "maxLaunchDelaySeconds": 3600,
+  "container": {
+    "type": "DOCKER",
+    "volumes": [],
+    "docker": {
+      "image": "master.mesos:5000/confluentinc/cp-kafka-rest:3.2.0",
+      "network": "BRIDGE",
+      "portMappings": [
+        {
+          "containerPort": 8082,
+          "hostPort": 0,
+          "servicePort": 10132,
+          "protocol": "tcp",
+          "labels": {
+            "VIP_0": "rest-proxy:8082"
+          }
+        }
+      ],
+      "privileged": false,
+      "parameters": [],
+      "forcePullImage": true
+    }
+  },
+  "healthChecks": [
+    {
+      "path": "/",
+      "protocol": "HTTP",
+      "portIndex": 0,
+      "gracePeriodSeconds": 60,
+      "intervalSeconds": 60,
+      "timeoutSeconds": 20,
+      "maxConsecutiveFailures": 3,
+      "ignoreHttp1xx": false
+    }
+  ],
+  "readinessChecks": [],
+  "dependencies": [],
+  "upgradeStrategy": {
+    "minimumHealthCapacity": 1,
+    "maximumOverCapacity": 1
+  },
+  "labels": {
+    "DCOS_PACKAGE_RELEASE": "5",
+    "DCOS_SERVICE_SCHEME": "http",
+    "DCOS_PACKAGE_SOURCE": "http://master.mesos:8082/repo",
+    "HAPROXY_GROUP": "external",
+    "DCOS_PACKAGE_REGISTRY_VERSION": "3.0",
+    "DCOS_SERVICE_NAME": "rest-proxy",
+    "DCOS_SERVICE_PORT_INDEX": "0",
+    "HAPROXY_0_HTTP_BACKEND_PROXYPASS_PATH": "/kafka-api",
+    "HAPROXY_0_PATH": "/kafka-api",
+    "DCOS_PACKAGE_VERSION": "0.9.8-3.2.0",
+    "DCOS_PACKAGE_NAME": "confluent-rest-proxy",
+    "DCOS_PACKAGE_IS_FRAMEWORK": "false",
+    "HAPROXY_0_VHOST": "10.165.105.158,10.165.105.159,10.165.105.71,mesos.symphony.sh.rccl.com"
+  },
+  "acceptedResourceRoles": [
+    "*"
+  ],
+  "ipAddress": null,
+  "residency": null,
+  "secrets": {},
+  "taskKillGracePeriodSeconds": null,
+  "portDefinitions": [
+    {
+      "port": 10132,
+      "protocol": "tcp",
+      "name": "rest-proxy",
+      "labels": {
+        "VIP_0": "rest-proxy:8082"
+      }
+    }
+  ],
+  "requirePorts": false
+}

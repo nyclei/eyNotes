@@ -1,0 +1,112 @@
+{
+  "volumes": [],
+  "id": "/confluent/connect",
+  "cmd": null,
+  "args": null,
+  "user": null,
+  "env": {
+    "CONNECT_CONSUMER_INTERCEPTOR_CLASSES": "io.confluent.monitoring.clients.interceptor.MonitoringConsumerInterceptor",
+    "CONNECT_REST_ADVERTISED_HOST_NAME": "localhost",
+    "CONNECT_PRODUCER_INTERCEPTOR_CLASSES": "io.confluent.monitoring.clients.interceptor.MonitoringProducerInterceptor",
+    "CONNECT_KEY_CONVERTER_SCHEMA_REGISTRY_URL": "http://schema-registry.marathon.l4lb.thisdcos.directory:8081",
+    "CONNECT_KEY_CONVERTER": "io.confluent.connect.avro.AvroConverter",
+    "CONNECT_VALUE_CONVERTER_SCHEMA_REGISTRY_URL": "http://schema-registry.marathon.l4lb.thisdcos.directory:8081",
+    "CONNECT_REST_PORT": "8085",
+    "CONNECT_LOG4J_ROOT_LOGLEVEL": "WARN",
+    "CONNECT_BOOTSTRAP_SERVERS": "broker-0.confluent-kafka.mesos:9092,broker-1.confluent-kafka.mesos:9092,broker-2.confluent-kafka.mesos:9092",
+    "CONNECT_GROUP_ID": "dcos-connect-group",
+    "CONNECT_INTERNAL_KEY_CONVERTER": "org.apache.kafka.connect.json.JsonConverter",
+    "CONNECT_STATUS_STORAGE_TOPIC": "dcos-connect-status",
+    "CONNECT_VALUE_CONVERTER": "io.confluent.connect.avro.AvroConverter",
+    "CONNECT_ZOOKEEPER_CONNECT": "master.mesos:2181/dcos-service-confluent-kafka/",
+    "KAFKA_HEAP_OPTS": "-Xmx768M",
+    "CONNECT_INTERNAL_VALUE_CONVERTER": "org.apache.kafka.connect.json.JsonConverter",
+    "CONNECT_OFFSET_STORAGE_TOPIC": "dcos-connect-offsets",
+    "CONNECT_CONFIG_STORAGE_TOPIC": "dcos-connect-configs"
+  },
+  "instances": 1,
+  "cpus": 4,
+  "mem": 8192,
+  "disk": 0,
+  "gpus": 0,
+  "executor": "",
+  "constraints": [],
+  "fetch": [],
+  "storeUrls": [],
+  "backoffSeconds": 1,
+  "backoffFactor": 1.15,
+  "maxLaunchDelaySeconds": 3600,
+  "container": {
+    "type": "DOCKER",
+    "volumes": [],
+    "docker": {
+      "image": "registry.allure.sh.rccl.com:10104/rccl_custom_connect:1.8",
+      "network": "BRIDGE",
+      "portMappings": [
+        {
+          "containerPort": 8085,
+          "hostPort": 0,
+          "servicePort": 10109,
+          "protocol": "tcp",
+          "labels": {
+            "VIP_0": "connect:8085"
+          }
+        }
+      ],
+      "privileged": false,
+      "parameters": [],
+      "forcePullImage": true
+    }
+  },
+  "healthChecks": [
+    {
+      "path": "/",
+      "protocol": "HTTP",
+      "portIndex": 0,
+      "gracePeriodSeconds": 60,
+      "intervalSeconds": 60,
+      "timeoutSeconds": 20,
+      "maxConsecutiveFailures": 3,
+      "ignoreHttp1xx": false
+    }
+  ],
+  "readinessChecks": [],
+  "dependencies": [],
+  "upgradeStrategy": {
+    "minimumHealthCapacity": 1,
+    "maximumOverCapacity": 1
+  },
+  "labels": {
+    "DCOS_PACKAGE_RELEASE": "5",
+    "DCOS_SERVICE_SCHEME": "http",
+    "DCOS_PACKAGE_SOURCE": "http://master.mesos:8082/repo",
+    "HAPROXY_GROUP": "external",    
+    "DCOS_PACKAGE_REGISTRY_VERSION": "3.0",
+    "DCOS_SERVICE_NAME": "connect",
+    "DCOS_SERVICE_PORT_INDEX": "0",
+    "HAPROXY_0_HTTP_BACKEND_PROXYPASS_PATH": "/kafka-connect",
+    "HAPROXY_0_PATH": "/kafka-connect",
+    "DCOS_PACKAGE_VERSION": "0.9.8-3.2.0",
+    "DCOS_PACKAGE_NAME": "confluent-connect",
+    "DCOS_PACKAGE_IS_FRAMEWORK": "false",
+    "HAPROXY_0_VHOST": "10.154.105.158,10.154.105.159"
+  },
+  "acceptedResourceRoles": [
+    "*"
+  ],
+  "ipAddress": null,
+  "residency": null,
+  "secrets": {},
+  "taskKillGracePeriodSeconds": null,
+  "portDefinitions": [
+    {
+      "port": 10109,
+      "protocol": "tcp",
+      "name": "connect",
+      "labels": {
+        "VIP_0": "connect:8085"
+      }
+    }
+  ],
+  "requirePorts": false
+}
