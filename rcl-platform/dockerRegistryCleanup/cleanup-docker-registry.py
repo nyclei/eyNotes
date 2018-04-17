@@ -29,7 +29,7 @@ def lessThan(x, y):
 
 """ function : get sorted removable command
 """
-def getRemovableImageTags(imageName, numberToKeep, dryRun=True):
+def getRemovableImageTagsAndRemove(imageName, numberToKeep, dryRun=True):
     tagListUrl = REGISTRY_BASE_V2_URL + "/" + imageName + "/tags/list"
     response = urllib.urlopen(tagListUrl)
     j_data = json.loads(response.read())
@@ -54,6 +54,16 @@ def getRemovableImageTags(imageName, numberToKeep, dryRun=True):
         os.system("sleep 2")
 
 
+""" Remove orphan layers
+"""
+def removeOrphanLayers(dryRun=True):
+    deleteCmd = "delete_docker_registry_image.py --orphan "
+    if (dryRun):
+        deleteCmd += DRYRUN_FLAG
+    os.system(deleteCmd)
+    os.system("sleep 2")
+
+
 """ parsing v2 catalog
 """
 def probeCatalog(numberToKeep):
@@ -61,8 +71,9 @@ def probeCatalog(numberToKeep):
     response = urllib.urlopen(CATALOG_URL)
     j_data = json.loads(response.read())
     for imageName in j_data['repositories']:
-        getRemovableImageTags(imageName, numberToKeep, False)
+        getRemovableImageTagsAndRemove(imageName, numberToKeep, False)
 
+    removeOrphanLayers(False)
 
 """ Validate docker registry path
 """
@@ -79,8 +90,11 @@ def validateRegistryDataPath():
         print "The environment setting of 'REGISTRY_DATA_DIR' misses subfolders 'blogs' or 'repositories'. Exit"
         sys.exit(1)
 
-def main():
 
+
+""" Main Entrance
+"""
+def main():
     if os.geteuid() != 0:
         print "You need to have root privileges to run this script."
         sys.exit(0)
