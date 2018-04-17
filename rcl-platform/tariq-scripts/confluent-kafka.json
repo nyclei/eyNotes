@@ -9,7 +9,7 @@
   "brokers": {
     "cpus": 12,
     "mem": 65536,
-    "disk": 460800,
+    "disk": 4608,
     "disk_type": "MOUNT",
     "count": 3,
     "port": 9092,

@@ -1,0 +1,9 @@
+JANITOR_IMAGE=$(docker images | grep -m 1 "janitor" | cut -f 1 -d " ")
+echo $JANITOR_IMAGE
+
+if [ -z "$JANITOR_IMAGE" ]; then
+    echo "no janitor image"
+    exit 1
+fi
+
+sudo docker run $JANITOR_IMAGE:latest /janitor.py -r confluent-kafka-role -p confluent-kafka-principal -z dcos-service-confluent-kafka
