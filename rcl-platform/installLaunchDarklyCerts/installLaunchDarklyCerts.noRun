@@ -1,0 +1,21 @@
+# install Launch Darkly Certs
+cd /tmp/
+
+cp f2sharedglobalfastlynet.crt /opt/mesosphere/certs/ && \
+cp GlobalSignCloudSSLCA-SHA256-G3.crt /opt/mesosphere/certs/ && \
+cp GlobalSignRootCA.crt /opt/mesosphere/certs/
+
+cd /opt/mesosphere/certs
+
+openssl x509 -outform der -in f2sharedglobalfastlynet.crt -out f2sharedglobalfastlynet.der
+openssl x509 -outform der -in GlobalSignCloudSSLCA-SHA256-G3.crt -out GlobalSignCloudSSLCA-SHA256-G3.der
+openssl x509 -outform der -in GlobalSignRootCA.crt -out GlobalSignRootCA.der
+
+keytool -import -alias launchdarkly -keystore clientkeystore.jks -file f2sharedglobalfastlynet.der -storepass password -noprompt
+keytool -import -alias launchdarkly_CA -keystore clientkeystore.jks -file GlobalSignCloudSSLCA-SHA256-G3.der -storepass password -noprompt
+keytool -import -alias launchdarkly -keystore cacerts.jks -file f2sharedglobalfastlynet.der -storepass password -noprompt
+keytool -import -alias launchdarkly_CA -keystore cacerts.jks -file GlobalSignCloudSSLCA-SHA256-G3.der -storepass password -noprompt
+keytool -import -alias launchdarkly_root -keystore cacerts.jks -file GlobalSignRootCA.der -storepass password -noprompt
+
+keytool -list -keystore clientkeystore.jks -storepass password | grep launchdarkly
+keytool -list -keystore cacerts.jks -storepass password | grep launchdarkly

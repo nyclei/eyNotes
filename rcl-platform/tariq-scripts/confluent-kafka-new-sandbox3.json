@@ -1,0 +1,30 @@
+{
+  "service": {
+    "name": "confluent-kafka3",
+    "user": "nobody",
+    "principal": "confluent-kafka-principal",
+    "secret_name": "confluent-kafka3/kafka-secret",
+	"enable_replacement": true
+  },
+  "brokers": {
+   "cpus": 0.1,
+    "mem": 2048,
+    "disk": 4096,
+    "disk_type": "MOUNT",
+    "count": 3,
+    "port": 9092,
+    "heap": {
+      "size": 1024
+    },
+    "jmx": {
+      "enable": true,
+      "remote": true
+    }
+  },
+  "kafka": {
+    "confluent_support_metrics_enable": true,
+    "confluent_support_customer_id": "C00130",
+    "confluent_metric_reporters": "io.confluent.metrics.reporter.ConfluentMetricsReporter",
+	"delete_topic_enable": true
+  }
+}
