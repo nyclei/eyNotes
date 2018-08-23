@@ -1,0 +1,18 @@
+{
+  "service": {
+    "name": "confluent-kafka"
+  },
+  "brokers": {
+    "cpus": 3,
+    "mem": 4096,
+    "heap": {
+      "size": 2048
+    },
+    "disk_type": "MOUNT",
+    "disk_path": "kafka-broker-data",
+    "count": 3,
+    "port": 9092,
+    "port_tls": 0,
+    "kill_grace_period": 30
+  }
+}
