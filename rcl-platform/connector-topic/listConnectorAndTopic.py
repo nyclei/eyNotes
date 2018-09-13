@@ -5,7 +5,16 @@ import json
 import sys
 import os
 
+
+publicNodeUrl = "http://10.17.125.74:13569/connectors"
 publicNodeUrl = "http://10.17.121.235:10109/connectors"
+
+
+TEMPFILE = "./connector-topic-map.json"
+
+if (len(sys.argv) > 1):
+    publicNodeUrl = sys.argv[1]
+
 connectors = [
     "ga-profile-bookings-b-replicator-SY-v1",
     "deck_list_source_prod_v1",
@@ -131,11 +140,33 @@ connectors2 = [
     "ga-postal-optins-b-replicator-RF-v1"
 ]
 
-for connector in connectors2:
+output = []
+for connector in connectors:
     print
     url=publicNodeUrl+"/"+connector
     print "URL ==> " + url
     resp=requests.request('GET', url)
-    jsonData = json.load(resp)
-    print jsonData
-    #print '"'+connector+'",'+'"'+topic+'"'
+
+    try:
+        jsonData = json.loads(resp.text)
+        config = jsonData.get('config')
+        topics = str(config.get('topic.whitelist'))+","+str(config.get('topics'))
+        topicList = topics.split(",")
+        for t in topicList:
+            if t=="None":
+                continue
+            # print t
+            # print '"'+connector+'",'+'"'+topic+'"'
+            element={}
+            element["connector"]=connector
+            element["topic"]=t
+            output.append(element)
+    except:
+        print '   X -> Failed to decode topic for connector ['+connector+']'
+
+print
+print
+content = str(output).replace("'","\"")
+print content
+with open(TEMPFILE, "a+") as f:
+    f.write(content)

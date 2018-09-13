@@ -36,10 +36,27 @@ def check_kafka_connect_ncp(host, port):
     except:
         print "  Kafka Connect:  "+destUrl+" ==>", bcolors.FAIL,"Connection Refused",bcolors.ENDC
 
+
+def check_kafka_connect_root_endpoint(host, port):
+    destUrl = "http://"+host+":"+port
+    print "  -> curl " + destUrl
+    try:
+        response = urllib.urlopen(destUrl)
+        code = response.getcode()
+        html = response.read()
+        if (code == 200):
+            print "  Kafka Connect:  "+destUrl+" ==>", bcolors.CYAN,str(code),bcolors.ENDC
+            print html
+        else:
+            print "  Kafka Connect:  "+destUrl+" ==>", bcolors.FAIL,str(code),bcolors.ENDC
+    except:
+        print "  Kafka Connect:  "+destUrl+" ==>", bcolors.FAIL,"Connection Refused",bcolors.ENDC
+
 def check_connect_by_str(connectStr):
     ary = connectStr.split("_")
     host = ary[0]+"."+ary[1]+"."+ary[2]+"."+ary[3]
     port = ary[4]
+    check_kafka_connect_root_endpoint(host, port)
     check_kafka_connect_ncp( host, port)
 
 def parse_mlb_csv(pub_node):

@@ -28,18 +28,25 @@ import os.path
 # > kafka-topics --zookeeper localhost:2181 --topic _schemas --describe
 ###############################################################################
 
-# From where to backup the _schema topic
-backupBroker = '10.17.125.74:9092'    # sys.argv[1]
-#restoreBroker = 'localhost:9092'
+if (len(sys.argv) <= 1):
+    print "Usage:"
+    print "  ./restore.py [schema-registry-endpoint]"
+    print "Example:  "
+    print "  ./restore.py 'http://10.196.105.158:10131/subjects' \n"
+    sys.exit(1)
+
 
 # To where to restore the _schema topic
-restoreSchemaRegistryBaseUrl = "http://localhost:8081/subjects"
+restoreSchemaRegistryBaseUrl = str(sys.argv[1])
+#restoreSchemaRegistryBaseUrl = "http://localhost:8081/subjects"
 #restoreSchemaRegistryBaseUrl = "http://10.196.105.158:10131/subjects"
 
 kTopic  = "_schemas"
 backupFile = '/tmp/tempSchemas.json'  # '/tmp/_schemas.backup.json'
 
 if (not os.path.isfile(backupFile)):
+    # From where to backup the _schema topic
+    backupBroker = '10.17.125.74:9092'    # sys.argv[1]
     print 'Run following command for backup _schema from Broker:', backupBroker
     print '> kafka-console-consumer --bootstrap-server '+backupBroker+' --topic _schemas --from-beginning > ' + backupFile
     sys.exit(0)
@@ -84,6 +91,10 @@ with open (backupFile, "r") as myfile:
                 time.sleep(1)
         except:
             continue
-        #p1 = subprocess.Popen(["echo", line.strip()], stdout=subprocess.PIPE)
-        #p2 = subprocess.Popen(["kt", "produce", "-topic", kTopic, "-literal", "-brokers", restoreBroker], stdin=p1.stdout)
-        #p2.communicate()
+
+
+
+#restoreBroker = 'localhost:9092'
+#p1 = subprocess.Popen(["echo", line.strip()], stdout=subprocess.PIPE)
+#p2 = subprocess.Popen(["kt", "produce", "-topic", kTopic, "-literal", "-brokers", restoreBroker], stdin=p1.stdout)
+#p2.communicate()

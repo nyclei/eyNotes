@@ -1,0 +1,4 @@
+---
+- hosts: dcos_master_1
+  roles:
+    - { role: confluent-kafka-install-brokers-role }

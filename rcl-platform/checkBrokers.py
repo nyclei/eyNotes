@@ -103,21 +103,21 @@ def check_kafka_connect_ga(env, publicSlaveNode):
     try:
         code = urllib.urlopen("http://"+publicSlaveNode+":10111/connectors").getcode()
         if (code == 200):
-            print "  Kafka Connect GA:  http://"+publicSlaveNode+":10111/connectors ==>", bcolors.CYAN,str(code),bcolors.ENDC
+            print "  Kafka Connect Digital Commerce:  http://"+publicSlaveNode+":10111/connectors ==>", bcolors.CYAN,str(code),bcolors.ENDC
         else:
-            print "  Kafka Connect GA:  http://"+publicSlaveNode+":10111/connectors ==>", bcolors.FAIL,str(code),bcolors.ENDC
+            print "  Kafka Connect Digital Commerce:  http://"+publicSlaveNode+":10111/connectors ==>", bcolors.FAIL,str(code),bcolors.ENDC
     except:
-        print "  Kafka Connect GA:  http://"+publicSlaveNode+":10111/connectors ==>", bcolors.FAIL,"Connection Refused",bcolors.ENDC
+        print "  Kafka Connect Digital Commerce:  http://"+publicSlaveNode+":10111/connectors ==>", bcolors.FAIL,"Connection Refused",bcolors.ENDC
 
 def check_kafka_connect_ncp(env, publicSlaveNode):
     try:
         code = urllib.urlopen("http://"+publicSlaveNode+":10112/connectors").getcode()
         if (code == 200):
-            print "  Kafka Connect NCP:  http://"+publicSlaveNode+":10112/connectors ==>", bcolors.CYAN,str(code),bcolors.ENDC
+            print "  Kafka Connect GA:  http://"+publicSlaveNode+":10112/connectors ==>", bcolors.CYAN,str(code),bcolors.ENDC
         else:
-            print "  Kafka Connect NCP:  http://"+publicSlaveNode+":10112/connectors ==>", bcolors.FAIL,str(code),bcolors.ENDC
+            print "  Kafka Connect GA:  http://"+publicSlaveNode+":10112/connectors ==>", bcolors.FAIL,str(code),bcolors.ENDC
     except:
-        print "  Kafka Connect NCP:  http://"+publicSlaveNode+":10112/connectors ==>", bcolors.FAIL,"Connection Refused",bcolors.ENDC
+        print "  Kafka Connect GA:  http://"+publicSlaveNode+":10112/connectors ==>", bcolors.FAIL,"Connection Refused",bcolors.ENDC
 
 def display_hint(env, publicSlaveNode):
     print
@@ -165,10 +165,10 @@ def check_all():
     check_kafka("Ship - HM", "10.164.105.158", ['10.164.105.154','10.164.105.155','10.164.105.156'])
     check_kafka("Ship - EQ", "10.149.105.158", ['10.149.105.154','10.149.105.155','10.149.105.156'])
     check_kafka("Ship - CS", "10.142.105.158", ['10.142.105.154','10.142.105.155','10.142.105.156'])
-    check_kafka("AWS Sandbox", "10.16.6.61",  ['10.16.7.73','10.16.5.80','10.16.7.194','10.16.6.87','10.16.6.85'])
+    check_kafka("AWS Sandbox", "10.16.5.45",  ['10.16.14.7','10.16.14.17','10.16.14.30','10.16.14.21'])
     check_kafka("Ship Sandbox", "10.196.105.198", ['10.196.105.194','10.196.105.195','10.196.105.196'])
     check_kafka("AWS Dev/Test", '10.16.4.8', ['10.16.7.199', '10.16.5.91','10.16.5.94','10.16.4.241'])
-
+    check_kafka("Ship - LB", "10.146.105.158", ['10.146.105.154','10.146.105.155','10.146.105.156'])
 # TODO: refine later
 
 hint = False 
@@ -181,13 +181,15 @@ if len(sys.argv) > 1:
     if(envCode == 'ShipSandbox'):
         check_kafka("Ship Sandbox", "10.196.105.198", ['10.196.105.194','10.196.105.195','10.196.105.196'], hint)
     elif(envCode == 'AwsSandbox'):
-        check_kafka("AWS Sandbox", "10.16.6.61",  ['10.16.7.73','10.16.5.80','10.16.7.194','10.16.6.87','10.16.6.85'])
+        check_kafka("AWS Sandbox", "10.16.5.45",  ['10.16.14.7','10.16.14.17','10.16.14.30','10.16.14.21'])
     elif(envCode == 'MA'):
         check_kafka("Ship - MA", "10.132.105.158", ['10.132.105.154','10.132.105.155','10.132.105.156'], hint)
+    elif(envCode == 'EN'):
+        check_kafka("Ship - EN", "10.117.105.158", ['10.117.105.154','10.117.105.155','10.117.105.156'])
     elif(envCode == 'BR'):
         check_kafka("Ship - BR", "10.127.105.158", ['10.127.105.154','10.127.105.155','10.127.105.156'], hint)
     elif(envCode == 'prod'):
-        check_kafka("AWS Production", '10.17.121.235', ['10.17.125.74','10.17.121.27','10.17.122.121'], hint)
+        check_kafka("AWS Production", '10.17.121.235', ['10.17.121.150','10.17.125.215','10.17.125.74','10.17.122.220', '10.17.122.121'], hint)
     elif(envCode == 'OA'):
         check_kafka("Ship - OA", "10.150.105.158", ['10.150.105.154','10.150.105.155','10.150.105.156'], hint)
     elif(envCode == 'EQ'):
@@ -200,6 +202,8 @@ if len(sys.argv) > 1:
         check_kafka("ShipTest", '10.135.105.158', ['10.135.105.154','10.135.105.155','10.135.105.156'], hint)
     elif(envCode == 'ST2'):
         check_kafka("ShipTest2", "10.196.105.158", ['10.196.105.154','10.196.105.155','10.196.105.156'], hint)
+    elif(envCode == 'SY'):
+        check_kafka("Ship - SY", "10.165.105.158", ['10.165.105.154','10.165.105.155','10.165.105.156'])
     elif(envCode == 'ID'):
         check_kafka("Independence", '10.147.105.158', ['10.147.105.154','10.147.105.155','10.147.105.156'], hint)
     elif(envCode == 'AL'):
@@ -212,6 +216,12 @@ if len(sys.argv) > 1:
         check_kafka("AWS Dev2 (new)", "10.16.4.176", ['10.16.7.160','10.16.6.71','10.16.6.34'], hint)
     elif(envCode == 'test2'):
         check_kafka("AWS Test2 (new)", "10.16.6.92", ['10.16.6.44','10.16.6.228','10.16.5.11','10.16.6.96'], hint)
+    elif(envCode == 'LB'):
+        check_kafka("Ship - LB", "10.146.105.158", ['10.146.105.154','10.146.105.155','10.146.105.156'])
+    elif(envCode == 'PR'):
+        check_kafka("Ship - PR", "10.157.105.158", ['10.157.105.154','10.157.105.155','10.157.105.156'])
+    elif(envCode == 'ShipStage'):
+        check_kafka("Ship Staging", "10.137.105.158", ['10.137.105.154','10.137.105.155','10.137.105.156'])
 else:
     check_all()
 
